@@ -74,33 +74,15 @@ Important limits:
 This project is not a security boundary against a compromised host, OS account,
 or deliberately unsafe tool policy.
 
-## Not shipped yet
-
-- real-host install, permission, lifecycle, upgrade, and uninstall certification
-  for the Claude Code, Cursor, Antigravity, Kiro, Cline, and Roo source packs
-- browser/DevTools providers and provider-driven evidence capture (the generic typed browser Evidence kind exists)
-- host-enforced mediation of every repository, shell, runtime, network, or browser action
-- visual inspector or web application
-- curated Codex directory listing, signed release artifact, or full clean-machine lifecycle certification
-- native parallel-work scheduling guarantees across hosts
-- runtime Tree-sitter/LSP/code-graph retrieval and lossy semantic compression (development-only Graphifyy/Gate-MCP use is recorded separately)
-- team sync, remote storage, telemetry, or hosted model service
-- supported upgrade, uninstall, retention, and per-run deletion flows
-- one canonical trace projection shared by MCP and the diagnostic CLI
-- a user-facing cancellation/new-run handoff beyond the terminal `NextAction`
-- a public vulnerability-reporting address
-
 ## Platform and distribution claim
 
 The npm package provides the portable `telic` CLI and STDIO MCP server. The
 Codex plugin is installable through this repository's public Git marketplace
 and bundles a Node.js MCP server. Six additional source packs pass repository validation and a local STDIO
 contract smoke test; Antigravity and Kiro also pass locally installed CLI schema
-validators. That is not the same as a published host marketplace release or
-real-host certification. Linux x86-64 is the active development environment.
-Ubuntu and macOS are configured as CI targets in the current candidate, but a
-passing remote run is required before broadening the claim. Native Windows and
-WSL need explicit filesystem, permission, and lifecycle work.
+validators. These source packs are not published host marketplace releases.
+Linux x86-64 is the active development environment. Ubuntu and macOS run the
+automated CI suite. Native Windows and WSL are not in the current test matrix.
 
 ## Next release gates
 
@@ -110,4 +92,4 @@ WSL need explicit filesystem, permission, and lifecycle work.
 4. Add a deterministic demo fixture with honest browser-unavailable behavior.
 5. Complete the dependency and security review, then publish a monitored
    vulnerability-reporting channel.
-6. Publish a pinned artifact and record its checksum, repository URL, and Build Week session evidence.
+6. Publish a pinned artifact and record its checksum and repository URL.
