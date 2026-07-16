@@ -1,8 +1,8 @@
 # Source-preview demo
 
 This guide demonstrates the current Codex plugin from source. It also explains
-how the local MCP process fits the six experimental host packs. Telic is not yet
-a published npm package or a certified Antigravity integration.
+how the local MCP process fits the six experimental host packs. The portable CLI
+can be installed from npm, but Telic is not a certified Antigravity integration.
 
 ## What the demo proves
 
@@ -17,7 +17,15 @@ The demo can show:
 It does not prove that Telic intercepts every editor action, controls the host
 model, provides hidden chain-of-thought, or supports an untested host surface.
 
-## Prepare Telic from source
+## Prepare Telic
+
+For a quick MCP-only demo, verify the npm package:
+
+```bash
+npx @dukeabaddon/telic doctor --json
+```
+
+For the Codex source plugin demo, build from source.
 
 Requirements:
 

@@ -1,9 +1,10 @@
 # Installation and local runtime
 
-**Status: source preview.** The repository can be built, tested, run as a STDIO
-MCP server, loaded through its local Codex marketplace, and materialized into six
-experimental host packs. There is no public npm package, remote marketplace,
-signed release, or supported clean-machine distribution yet.
+**Status: local preview.** The npm package provides the portable `telic` CLI and
+STDIO MCP server. The repository can also be built, tested, loaded through its
+local Codex marketplace, and materialized into six experimental host packs.
+There is no remote host marketplace, signed release, or full lifecycle
+certification yet.
 
 ## Requirements
 
@@ -14,7 +15,41 @@ signed release, or supported clean-machine distribution yet.
   official Codex-only validation pass
 - optional Git and ripgrep; context discovery falls back to the filesystem when unavailable
 
-No separate model API key, browser package, database server, service manager, open port, or global npm install is required.
+No separate model API key, browser package, database server, service manager,
+open port, or global npm install is required.
+
+## Install from npm
+
+Run without installing globally:
+
+```bash
+npx @dukeabaddon/telic doctor --json
+```
+
+Or install the CLI:
+
+```bash
+npm install -g @dukeabaddon/telic
+telic doctor --json
+```
+
+For a STDIO MCP client, use:
+
+```json
+{
+  "mcpServers": {
+    "telic": {
+      "command": "npx",
+      "args": ["-y", "@dukeabaddon/telic", "mcp"],
+      "env": {
+        "TELIC_REPOSITORY_ROOT": "/absolute/path/to/target-project"
+      }
+    }
+  }
+}
+```
+
+Add `TELIC_STATE_DIR` to the `env` object when you want isolated run state.
 
 ## Build and verify from source
 
@@ -49,7 +84,8 @@ and installs hash-pinned PyYAML `6.0.3` on first use. It checks for the
 machine-local validator before bootstrapping. Those official scripts are not a
 repository dependency and are therefore not required by portable CI.
 
-The packages are private workspace packages. `npm ci` installs them for development; it does not publish or globally install Telic.
+Most workspace packages are private implementation packages. `npm ci` installs
+them for development; the public package is `@dukeabaddon/telic`.
 
 ## Run the local MCP server
 

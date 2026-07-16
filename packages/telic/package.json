@@ -1,0 +1,37 @@
+{
+  "name": "@dukeabaddon/telic",
+  "version": "0.1.0",
+  "description": "A local MCP control plane for permission-bounded, evidence-backed agentic coding workflows.",
+  "type": "module",
+  "bin": {
+    "telic": "dist/bin.js"
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Dukeabaddon/Telic#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dukeabaddon/Telic.git",
+    "directory": "packages/telic"
+  },
+  "bugs": {
+    "url": "https://github.com/Dukeabaddon/Telic/issues"
+  },
+  "keywords": [
+    "mcp",
+    "codex",
+    "agentic",
+    "prompt-engineering",
+    "coding-agent",
+    "workflow"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

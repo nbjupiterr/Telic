@@ -11,10 +11,11 @@
     "node": ">=24.15.0"
   },
   "scripts": {
-    "build": "npm run build:packages && npm run bundle:plugin && npm run bundle:adapters",
+    "build": "npm run build:packages && npm run bundle:plugin && npm run bundle:adapters && npm run bundle:npm",
     "build:packages": "tsc -b",
     "bundle:plugin": "esbuild packages/mcp/src/server.ts --bundle --platform=node --format=esm --target=node24 --outfile=plugins/telic/dist/mcp/server.js",
     "bundle:adapters": "node scripts/sync-adapters.mjs",
+    "bundle:npm": "esbuild packages/cli/src/bin.ts --bundle --platform=node --format=esm --target=node24 --outfile=packages/telic/dist/bin.js",
     "clean": "tsc -b --clean",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
@@ -29,6 +30,7 @@
     "adapters:validate": "node scripts/validate-adapters.mjs",
     "adapters:validate:native": "node scripts/validate-adapters.mjs --native",
     "adapters:test": "vitest run test/adapter-packs.test.ts",
+    "pack:check": "npm run build && npm pack --workspace @dukeabaddon/telic --dry-run",
     "check": "npm run format:check && npm run build && npm run test:coverage && npm run codex-assets:validate && npm run marketplace:validate && npm run adapters:validate",
     "check:official": "npm run check && npm run codex:validate:official"
   },

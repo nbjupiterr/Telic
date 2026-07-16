@@ -13,7 +13,7 @@ Telic is an executable, local source preview. It is suitable for development and
 | Persistence     | SQLite metadata/events plus immutable SHA-256-addressed JSON bodies; digest verification occurs on read                                                                   |
 | Context         | Bounded Git, ripgrep, or filesystem inventory; deterministic ranking; file/count/byte budgets; realpath and symlink containment; duplicate and heuristic secret exclusion |
 | MCP             | Local STDIO server with seven tools plus a host-neutral `telic_workflow` prompt                                                                                           |
-| CLI             | Source-built `doctor`, `status`, `trace`, `artifact`, and `mcp` commands                                                                                                  |
+| CLI             | npm-packaged and source-built `doctor`, `status`, `trace`, `artifact`, and `mcp` commands                                                                                 |
 | Host package    | Codex reference plugin plus six experimental source packs generated from one canonical skill and MCP bundle                                                               |
 | Model access    | None in the runtime; the active host model authors semantic artifacts                                                                                                     |
 | Network service | None required; normal transport is local STDIO                                                                                                                            |
@@ -76,7 +76,7 @@ This project is not a security boundary against a compromised host, OS account, 
 - browser/DevTools providers and provider-driven evidence capture (the generic typed browser Evidence kind exists)
 - host-enforced mediation of every repository, shell, runtime, network, or browser action
 - visual inspector or web application
-- public npm packages, remote marketplace, signed release artifact, or clean-machine judge bundle
+- remote marketplace, signed release artifact, or full clean-machine lifecycle certification
 - native parallel-work scheduling guarantees across hosts
 - runtime Tree-sitter/LSP/code-graph retrieval and lossy semantic compression (development-only Graphifyy/Gate-MCP use is recorded separately)
 - team sync, remote storage, telemetry, or hosted model service
@@ -87,10 +87,11 @@ This project is not a security boundary against a compromised host, OS account, 
 
 ## Platform and distribution claim
 
-The source-built Codex plugin has a local marketplace entry and bundled Node.js
-MCP server. Six additional source packs pass repository validation and a local
-STDIO contract smoke test; Antigravity and Kiro also pass locally installed CLI
-schema validators. That is not the same as a published marketplace release or
+The npm package provides the portable `telic` CLI and STDIO MCP server. The
+source-built Codex plugin has a local marketplace entry and bundled Node.js MCP
+server. Six additional source packs pass repository validation and a local STDIO
+contract smoke test; Antigravity and Kiro also pass locally installed CLI schema
+validators. That is not the same as a published host marketplace release or
 real-host certification. Linux x86-64 is the active development environment.
 Ubuntu and macOS are configured as CI targets in the current candidate, but a
 passing remote run is required before broadening the claim. Native Windows and

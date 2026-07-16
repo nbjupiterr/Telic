@@ -6,7 +6,8 @@ Telic is a local MCP control plane for coding agents. It helps an active coding
 host turn an ambiguous request into a grounded plan, inspectable work, verified
 results, and an honest final report.
 
-**Status:** executable source preview. Codex has the reference plugin. Six
+**Status:** executable local preview. The npm package provides the portable
+`telic` CLI and STDIO MCP server. Codex has the reference source plugin. Six
 additional host packs are available as experimental source adapters. Telic does
 not call a model API, require a hosted service, or claim that it can intercept
 every action taken by an IDE.
@@ -62,6 +63,7 @@ requires a new run. It does not run an unlimited autonomous loop.
 
 ## What is included
 
+- `@dukeabaddon/telic` — npm-distributed `telic` CLI and local STDIO MCP server.
 - `@telic/protocol` — strict Zod artifact schemas and cross-field contracts.
 - `@telic/core` — deterministic state machine, permissions, budgets, SQLite
   metadata, and immutable content-addressed artifact bodies.
@@ -75,6 +77,36 @@ requires a new run. It does not run an unlimited autonomous loop.
   standalone bundled server.
 - `adapters/` — source-preview packs for Claude Code, Antigravity, Cursor, Kiro,
   Cline, and Roo Code.
+
+## Quick start with npm
+
+Requirements: Node.js `>=24.15.0`. Git and ripgrep improve discovery but are
+optional.
+
+Run without installing globally:
+
+```bash
+npx @dukeabaddon/telic doctor --json
+```
+
+Use the bundled STDIO MCP server from any MCP-compatible host:
+
+```json
+{
+  "mcpServers": {
+    "telic": {
+      "command": "npx",
+      "args": ["-y", "@dukeabaddon/telic", "mcp"],
+      "env": {
+        "TELIC_REPOSITORY_ROOT": "/absolute/path/to/target-project"
+      }
+    }
+  }
+}
+```
+
+Set `TELIC_STATE_DIR` when you want run state outside the default user state
+directory.
 
 ## Build from source
 
