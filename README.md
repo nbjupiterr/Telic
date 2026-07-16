@@ -24,8 +24,8 @@ or hosted Telic service is required.
 Start with the way people naturally ask for help:
 
 ```text
-Telic: every school is showing PUP as the top recommendation. I do not know if
-the matching is broken or the data is biased. Analyze only.
+Telic: every customer is receiving the same product recommendation. I do not
+know if the ranking logic is broken or the data is biased. Analyze only.
 ```
 
 Telic turns that into an inspectable workflow:
@@ -40,6 +40,11 @@ flowchart LR
     W --> V["Verify evidence"]
     V --> O["Report honestly"]
 ```
+
+**What happens under the hood:** Telic studies the repository context, frames
+the problem, creates structured requirements, reviews the task, guides the work
+within your permissions, verifies the evidence, and produces an honest final
+report.
 
 The workflow uses five logical roles:
 
