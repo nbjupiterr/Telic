@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "prompt-review-01",
+  "runId": "run-01",
+  "targetRef": "artifact://run-01/contract-01",
+  "rubricId": "contract-readiness-v1",
+  "revisionNumber": 0,
+  "coverage": [
+    {
+      "sourceRef": "artifact://run-01/user-message-01",
+      "contractFields": ["objective", "scope"],
+      "status": "covered"
+    }
+  ],
+  "dimensionScores": {
+    "intentFidelity": 95,
+    "repositoryGrounding": 80,
+    "constraintsAndPermissions": 95,
+    "testableAcceptance": 60,
+    "executionFeasibility": 80,
+    "contextEfficiency": 90
+  },
+  "overallScore": 83.25,
+  "hardGates": [
+    {
+      "id": "HG-evidence",
+      "passed": false,
+      "description": "Every required criterion has an observable evidence path.",
+      "evidenceRefs": ["artifact://run-01/contract-01"],
+      "rationaleSummary": "The runtime criterion lacks a declared evidence type."
+    }
+  ],
+  "findings": [
+    {
+      "id": "PR-1",
+      "severity": "blocking",
+      "claim": "Runtime verification is required but no verification requirement is declared.",
+      "sourceRefs": ["artifact://run-01/contract-01"],
+      "rubricDimension": "testableAcceptance",
+      "requiredCorrection": "Add the missing runtime verification requirement.",
+      "preserveFields": ["objective", "intentMode", "permissions"],
+      "correctionFields": ["verificationRequirements"],
+      "rationaleSummary": "One bounded contract correction makes the criterion testable."
+    }
+  ],
+  "decision": "revise",
+  "rationaleSummary": "Use the single revision to repair the evidence requirement."
+}

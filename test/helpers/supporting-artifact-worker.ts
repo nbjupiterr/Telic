@@ -1,0 +1,67 @@
+import { parentPort, workerData } from "node:worker_threads";
+
+import {
+  SqliteLedger,
+  type SubmissionEvent,
+  type SupportingArtifactQuota,
+} from "../../packages/core/src/ledger.ts";
+import type { ArtifactSubmission } from "../../packages/core/src/types.ts";
+import { TelicService } from "../../packages/mcp/src/service.ts";
+
+type LedgerWorkerData = {
+  kind: "ledger";
+  stateDirectory: string;
+  artifact: ArtifactSubmission;
+  event: Omit<SubmissionEvent, "phase"> & {
+    phase?: SubmissionEvent["phase"];
+  };
+  quota?: SupportingArtifactQuota;
+};
+
+type ServiceWorkerData = {
+  kind: "service";
+  repositoryRoot: string;
+  stateDirectory: string;
+  artifact: ArtifactSubmission;
+};
+
+if (parentPort === null) throw new Error("Supporting worker requires a parent");
+
+const data = workerData as LedgerWorkerData | ServiceWorkerData;
+const target =
+  data.kind === "ledger"
+    ? new SqliteLedger(data.stateDirectory)
+    : new TelicService({
+        repositoryRoot: data.repositoryRoot,
+        stateDirectory: data.stateDirectory,
+      });
+
+parentPort.postMessage({ kind: "ready" });
+parentPort.once("message", (message: unknown) => {
+  if (message !== "go") return;
+  parentPort.postMessage({ kind: "starting" });
+  try {
+    const artifact =
+      data.kind === "ledger"
+        ? target instanceof SqliteLedger
+          ? target.appendSupportingArtifact(
+              data.artifact,
+              data.event,
+              data.quota,
+            )
+          : null
+        : target instanceof TelicService
+          ? target.submitArtifact(data.artifact).artifact
+          : null;
+    parentPort.postMessage({ kind: "result", ok: true, artifact });
+  } catch (error) {
+    parentPort.postMessage({
+      kind: "result",
+      ok: false,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  } finally {
+    target.close();
+    parentPort.close();
+  }
+});

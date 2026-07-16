@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "id": "contract-01",
+  "runId": "run-01",
+  "version": 1,
+  "originalRequestRef": "artifact://run-01/user-message-01",
+  "problemFrameRef": "artifact://run-01/frame-01",
+  "intentMode": "analyze_only",
+  "objective": "Identify the failed communication boundary and supported cause.",
+  "scope": { "include": ["apps/web", "apps/api"], "exclude": ["production"] },
+  "constraints": ["Do not mutate the repository or runtime."],
+  "nonGoals": ["Do not implement a fix."],
+  "contextRefs": ["repo://apps/web/src/api.ts"],
+  "ruleRefs": ["repo://AGENTS.md"],
+  "permissions": {
+    "repository": {
+      "read": ["apps/web/**", "apps/api/**"],
+      "write": [],
+      "delete": []
+    },
+    "shell": { "inspect": true, "executeAllowlist": [] },
+    "runtime": { "inspect": ["local"], "restart": [] },
+    "browser": { "inspect": true, "mutateState": false },
+    "network": { "readDomains": [], "externalWrite": false },
+    "subagents": { "spawn": false, "maximumChildren": 0, "maximumDepth": 0 }
+  },
+  "acceptanceCriteria": [
+    {
+      "id": "AC-1",
+      "stage": "completion",
+      "requirement": "Identify the failed request boundary.",
+      "evidenceRequired": ["browser_network_or_equivalent"]
+    }
+  ],
+  "requiredOutputs": ["Evidence-backed diagnosis"],
+  "verificationRequirements": [
+    {
+      "id": "VR-1",
+      "stage": "completion",
+      "description": "Capture the failed request or an equivalent runtime artifact.",
+      "required": true,
+      "capability": "browser.inspect",
+      "fallback": "Use local API logs if browser inspection is unavailable."
+    }
+  ],
+  "stopConditions": ["Stop before any mutation."],
+  "assumptions": [],
+  "unresolvedQuestions": [],
+  "rationaleSummary": "The contract preserves analysis-only scope and requires direct evidence."
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "id": "prompt-review-01",
+  "runId": "run-01",
+  "targetRef": "artifact://run-01/contract-01",
+  "rubricId": "contract-readiness-v1",
+  "revisionNumber": 0,
+  "coverage": [],
+  "dimensionScores": {
+    "intentFidelity": 100,
+    "repositoryGrounding": 100,
+    "constraintsAndPermissions": 100,
+    "testableAcceptance": 100,
+    "executionFeasibility": 100,
+    "contextEfficiency": 100
+  },
+  "overallScore": 100,
+  "hardGates": [
+    {
+      "id": "HG-1",
+      "passed": true,
+      "description": "The objective preserves the request.",
+      "evidenceRefs": ["artifact://run-01/user-message-01"],
+      "rationaleSummary": "The objective maps directly to the request."
+    }
+  ],
+  "findings": [],
+  "decision": "pass",
+  "rationaleSummary": "All frozen gates pass.",
+  "chainOfThought": "Private reasoning must never be accepted or persisted."
+}

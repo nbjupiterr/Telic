@@ -1,0 +1,37 @@
+{
+  "name": "telic-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A model-independent intent compiler and evidence-driven control plane for coding agents.",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "build": "npm run build:packages && npm run bundle:plugin",
+    "build:packages": "tsc -b",
+    "bundle:plugin": "esbuild packages/mcp/src/server.ts --bundle --platform=node --format=esm --target=node24 --outfile=plugins/telic/dist/mcp/server.js",
+    "clean": "tsc -b --clean",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "plugin:validate": "python3 scripts/run_codex_validator.py plugin",
+    "skill:validate": "python3 scripts/run_codex_validator.py skill",
+    "marketplace:validate": "node scripts/validate-marketplace.mjs .agents/plugins/marketplace.json",
+    "check": "npm run format:check && npm run build && npm test && npm run plugin:validate && npm run skill:validate && npm run marketplace:validate"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "@vitest/coverage-v8": "4.1.10",
+    "esbuild": "0.28.1",
+    "prettier": "3.9.5",
+    "tsx": "4.23.1",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}

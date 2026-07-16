@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "id": "quality-review-rule-failure",
+  "runId": "run-01",
+  "taskContractRef": "artifact://run-01/contract-01",
+  "workPlanRefs": ["artifact://run-01/plan-01"],
+  "workResultRefs": ["artifact://run-01/result-01"],
+  "rubricId": "execution-quality-v1",
+  "acceptanceResults": [
+    {
+      "criterionId": "AC-1",
+      "status": "pass",
+      "evidenceRefs": ["artifact://run-01/evidence-test-01"],
+      "rationaleSummary": "The functional criterion has direct evidence."
+    }
+  ],
+  "ruleCompliance": [
+    {
+      "id": "rule-no-mutation",
+      "description": "The run must remain read-only.",
+      "status": "fail",
+      "evidenceRefs": ["artifact://run-01/evidence-diff-01"],
+      "rationaleSummary": "A repository change violated the applicable rule."
+    }
+  ],
+  "regressionChecks": [],
+  "findings": [],
+  "hardGates": [
+    {
+      "id": "HG-acceptance",
+      "passed": true,
+      "description": "The functional acceptance criterion passed.",
+      "evidenceRefs": ["artifact://run-01/evidence-test-01"],
+      "rationaleSummary": "Functional evidence alone cannot override the failed rule check."
+    }
+  ],
+  "score": 99,
+  "remainingRemediations": 1,
+  "decision": "pass",
+  "diagnosisGate": null,
+  "remediationWorkOrder": null,
+  "rationaleSummary": "This invalid review tries to pass despite a failed rule check."
+}

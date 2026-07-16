@@ -1,0 +1,23 @@
+{
+  "name": "@telic/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "telic": "./dist/bin.js"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run --root ../.. packages/cli"
+  },
+  "dependencies": {
+    "@telic/core": "*",
+    "@telic/mcp": "*"
+  }
+}

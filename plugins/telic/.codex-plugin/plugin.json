@@ -1,0 +1,23 @@
+{
+  "name": "telic",
+  "version": "0.1.0",
+  "description": "Compile coding requests into permission-bounded, evidence-linked workflows with a local artifact ledger.",
+  "author": {
+    "name": "Telic contributors"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Telic",
+    "shortDescription": "Evidence-backed workflows for coding agents",
+    "longDescription": "Compile rough coding intent into repository-grounded task contracts, execute within explicit permissions, and audit every completion claim against evidence.",
+    "developerName": "Telic contributors",
+    "category": "Productivity",
+    "capabilities": ["Workflow", "Local MCP", "Evidence Trace"],
+    "defaultPrompt": [
+      "Use Telic to diagnose this project without making changes.",
+      "Use Telic to analyze and fix this bug with evidence.",
+      "Use Telic to turn this request into a verified plan."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "id": "quality-review-01",
+  "runId": "run-01",
+  "taskContractRef": "artifact://run-01/contract-01",
+  "workResultRefs": ["artifact://run-01/result-01"],
+  "rubricId": "execution-quality-v1",
+  "acceptanceResults": [
+    {
+      "criterionId": "AC-1",
+      "status": "fail",
+      "evidenceRefs": ["artifact://run-01/test-output-01"],
+      "rationaleSummary": "The expected behavior is still failing."
+    }
+  ],
+  "ruleCompliance": [],
+  "regressionChecks": [],
+  "findings": [],
+  "hardGates": [
+    {
+      "id": "HG-acceptance",
+      "passed": false,
+      "description": "Required acceptance criteria pass.",
+      "evidenceRefs": ["artifact://run-01/test-output-01"],
+      "rationaleSummary": "AC-1 failed."
+    }
+  ],
+  "score": 40,
+  "remainingRemediations": 1,
+  "decision": "remediate",
+  "remediationWorkOrder": null,
+  "rationaleSummary": "The decision lacks the required bounded work order."
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0",
+  "id": "quality-review-diagnosis-01",
+  "runId": "run-01",
+  "taskContractRef": "artifact://run-01/contract-01",
+  "workPlanRefs": ["artifact://run-01/plan-diagnosis-01"],
+  "workResultRefs": ["artifact://run-01/result-diagnosis-01"],
+  "rubricId": "execution-quality-v1",
+  "acceptanceResults": [
+    {
+      "criterionId": "AC-1",
+      "status": "unverified",
+      "evidenceRefs": [],
+      "rationaleSummary": "The correction has not run because mutation is still locked."
+    }
+  ],
+  "ruleCompliance": [
+    {
+      "id": "rule-diagnosis-read-only",
+      "description": "Diagnosis remained read-only.",
+      "status": "pass",
+      "evidenceRefs": ["artifact://run-01/evidence-action-ledger-01"],
+      "rationaleSummary": "The diagnosis action ledger contains no mutation."
+    }
+  ],
+  "regressionChecks": [],
+  "verificationResults": [
+    {
+      "requirementId": "VR-1",
+      "capability": "browser.inspect",
+      "status": "pass",
+      "evidenceRefs": ["artifact://run-01/evidence-browser-01"],
+      "rationaleSummary": "The browser evidence satisfies the required diagnosis verification."
+    }
+  ],
+  "findings": [],
+  "hardGates": [
+    {
+      "id": "HG-diagnosis-supported",
+      "passed": true,
+      "description": "Direct evidence supports the root cause and bounded correction.",
+      "evidenceRefs": ["artifact://run-01/evidence-browser-01"],
+      "rationaleSummary": "The captured failure and configuration source identify the same boundary."
+    }
+  ],
+  "score": 92,
+  "remainingRemediations": 1,
+  "decision": "proceed_to_fix",
+  "diagnosisGate": {
+    "id": "diagnosis-gate-01",
+    "status": "supported",
+    "rootCause": "The configured local origin does not match the browser request origin.",
+    "directEvidenceRefs": [
+      "artifact://run-01/evidence-browser-01",
+      "artifact://run-01/evidence-config-01"
+    ],
+    "correctionWorkOrder": {
+      "id": "correction-order-01",
+      "targetCriterionIds": ["AC-1"],
+      "objective": "Update only the local-development origin allowlist entry and verify the request again.",
+      "allowedCapabilities": ["repository.write"],
+      "permissions": {
+        "repository": { "read": [], "write": ["src/**"], "delete": [] },
+        "shell": { "inspect": false, "executeAllowlist": [] },
+        "runtime": { "inspect": [], "restart": [] },
+        "browser": { "inspect": false, "mutateState": false },
+        "network": { "readDomains": [], "externalWrite": false },
+        "subagents": { "spawn": false, "maximumChildren": 0, "maximumDepth": 0 }
+      },
+      "sourceRefs": [
+        "artifact://run-01/evidence-browser-01",
+        "artifact://run-01/evidence-config-01"
+      ],
+      "maximumToolCalls": 5,
+      "rationaleSummary": "The correction is constrained to one criterion and one capability."
+    },
+    "withinApprovedScope": true,
+    "permissionsSufficient": true,
+    "rationaleSummary": "Two direct artifacts support a correction already bounded by the contract."
+  },
+  "remediationWorkOrder": null,
+  "rationaleSummary": "Read-only diagnosis supports crossing the explicit mutation gate."
+}

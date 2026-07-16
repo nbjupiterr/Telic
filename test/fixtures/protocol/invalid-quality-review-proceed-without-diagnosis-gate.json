@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "id": "quality-review-diagnosis-unsafe",
+  "runId": "run-01",
+  "taskContractRef": "artifact://run-01/contract-01",
+  "workPlanRefs": ["artifact://run-01/plan-diagnosis-01"],
+  "workResultRefs": ["artifact://run-01/result-diagnosis-01"],
+  "rubricId": "execution-quality-v1",
+  "acceptanceResults": [
+    {
+      "criterionId": "AC-1",
+      "status": "unverified",
+      "evidenceRefs": [],
+      "rationaleSummary": "The correction has not run."
+    }
+  ],
+  "ruleCompliance": [],
+  "regressionChecks": [],
+  "findings": [],
+  "hardGates": [
+    {
+      "id": "HG-generic",
+      "passed": true,
+      "description": "The review has no blocking finding.",
+      "evidenceRefs": [],
+      "rationaleSummary": "This generic gate does not prove a root cause."
+    }
+  ],
+  "score": 90,
+  "remainingRemediations": 1,
+  "decision": "proceed_to_fix",
+  "remediationWorkOrder": null,
+  "rationaleSummary": "This invalid artifact tries to unlock mutation without a diagnosis gate."
+}

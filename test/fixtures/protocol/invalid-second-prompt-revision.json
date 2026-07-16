@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "id": "prompt-review-02",
+  "runId": "run-01",
+  "targetRef": "artifact://run-01/contract-02",
+  "rubricId": "contract-readiness-v1",
+  "revisionNumber": 1,
+  "coverage": [],
+  "dimensionScores": {
+    "intentFidelity": 70,
+    "repositoryGrounding": 70,
+    "constraintsAndPermissions": 70,
+    "testableAcceptance": 70,
+    "executionFeasibility": 70,
+    "contextEfficiency": 70
+  },
+  "overallScore": 70,
+  "hardGates": [
+    {
+      "id": "HG-1",
+      "passed": false,
+      "description": "The contract remains ungrounded.",
+      "evidenceRefs": ["artifact://run-01/contract-02"],
+      "rationaleSummary": "The one allowed revision did not repair grounding."
+    }
+  ],
+  "findings": [
+    {
+      "id": "PR-2",
+      "severity": "blocking",
+      "claim": "The contract remains ungrounded.",
+      "sourceRefs": ["artifact://run-01/contract-02"],
+      "rubricDimension": "repositoryGrounding",
+      "requiredCorrection": "Rebuild repository grounding.",
+      "preserveFields": [],
+      "correctionFields": ["contextRefs"],
+      "rationaleSummary": "A correction is needed, but the revision budget is exhausted."
+    }
+  ],
+  "decision": "revise",
+  "rationaleSummary": "This invalid artifact attempts a second revision."
+}

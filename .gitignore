@@ -1,0 +1,58 @@
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Build, test, and coverage output
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# The Codex plugin must carry its standalone local MCP bundle.
+!plugins/telic/dist/
+!plugins/telic/dist/mcp/
+!plugins/telic/dist/mcp/server.js
+
+# Local runtime state
+.telic/
+.cache/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+
+# Optional local analysis output
+graphify-out/
+repomix-output.*
+.gate-mcp/
+.gatemcp/
+
+# Maintainer-only source material (keep out of public release commits)
+.roo/
+plans/
+roo.txt
+AGENTS.md
+docs/BUILD_WEEK_LOG.md
+docs/HACKATHON.md
+docs/PRESENTATION_FLOW.md
+docs/VIDEO_SCRIPT_DRAFT.md
+docs/ROADMAP.md

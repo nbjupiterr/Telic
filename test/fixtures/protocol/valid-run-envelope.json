@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "runId": "run-01",
+  "createdAt": "2026-07-15T10:00:00Z",
+  "originalRequestRef": "artifact://run-01/user-message-01",
+  "followupRequestRefs": [],
+  "requestedMode": "analyze_only",
+  "status": "active",
+  "workingContext": {
+    "repositoryRoot": "/workspace/example",
+    "activeFiles": ["apps/web/src/api.ts"],
+    "applicableRuleRefs": ["repo://AGENTS.md"]
+  },
+  "host": {
+    "name": "codex",
+    "version": "0.144.2",
+    "nativeSubagents": "available",
+    "capabilities": ["repository.read", "shell.inspect"]
+  },
+  "authorization": {
+    "granted": {
+      "repository": { "read": ["**"], "write": [], "delete": [] },
+      "shell": { "inspect": true, "executeAllowlist": [] },
+      "runtime": { "inspect": ["local"], "restart": [] },
+      "browser": { "inspect": true, "mutateState": false },
+      "network": { "readDomains": [], "externalWrite": false },
+      "subagents": { "spawn": true, "maximumChildren": 3, "maximumDepth": 1 }
+    },
+    "denied": {
+      "repository": { "read": [], "write": ["**"], "delete": ["**"] },
+      "shell": { "inspect": false, "executeAllowlist": [] },
+      "runtime": { "inspect": [], "restart": ["*"] },
+      "browser": { "inspect": false, "mutateState": true },
+      "network": { "readDomains": [], "externalWrite": true },
+      "subagents": { "spawn": false, "maximumChildren": 0, "maximumDepth": 0 }
+    }
+  },
+  "budgets": {
+    "promptRevisions": 1,
+    "postExecutionRemediations": 1,
+    "maximumParallelWorkers": 3,
+    "maximumSubagentDepth": 1
+  },
+  "policyRefs": ["repo://AGENTS.md"]
+}
