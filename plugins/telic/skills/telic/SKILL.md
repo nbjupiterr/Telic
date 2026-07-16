@@ -1,6 +1,6 @@
 ---
 name: telic
-description: Compile non-trivial coding requests into permission-bounded, repository-grounded, evidence-linked workflows and audit execution before reporting. Use when the user explicitly invokes Telic or asks the coding host to diagnose, plan, fix, or analyze and fix a project through an inspectable multi-role workflow, especially for ambiguous, risky, multi-step, or verification-sensitive work.
+description: Compile non-trivial coding requests into permission-bounded, repository-grounded, evidence-linked workflows and audit execution before reporting. Use only when the user explicitly names or selects Telic, invokes the host-specific Telic command, or explicitly asks for a Telic workflow. Never auto-activate for an ordinary coding request.
 ---
 
 # Telic
@@ -12,6 +12,14 @@ the plugin skill as `$telic:telic`; a literal `/telic` is not its skill syntax.
 The Claude Code plugin uses `/telic:telic`; Antigravity CLI, Cursor, Cline, and
 Roo Code expose `/telic`. Kiro switches with `/agent swap telic` and then uses
 `/telic`. Never assume one spelling works in every host.
+
+## Activation boundary
+
+Use only when the user explicitly invokes Telic by name, selects its skill, or
+uses the host-specific Telic command. Never auto-activate Telic merely because a
+request involves diagnosis, planning, fixes, multiple files, or verification.
+Once activated, keep Telic active for that request unless the user cancels or a
+documented stop condition applies.
 
 ## Preserve authority
 
@@ -41,7 +49,7 @@ Do not silently upgrade an unclear request to a more permissive mode. Narrow a m
 ## Ground the run before compiling
 
 1. Inspect the current host capabilities instead of inferring them from the host name. Use only controller-recognized capability IDs: `repository.read`, `repository.write`, `repository.delete`, `shell.inspect`, `shell.execute`, `runtime.inspect`, `runtime.restart`, `browser.inspect`, `browser.mutate`, `network.read`, `external.write`, and `subagent.spawn`. Record native subagents separately as `available`, `unavailable`, or `unknown`. Treat `unknown` as unavailable for planning until the host verifies it; use the serial fallback instead of claiming a subagent ran.
-2. Start one Telic run with the exact user request, repository root, requested mode when explicit, actual capability profile, authorization, and default budgets.
+2. Start one Telic run with the exact user request, repository root, requested mode when explicit, actual capability profile, authorization, and default budgets. When `network.read` is explicitly authorized, pass only exact approved DNS names or IP addresses as network-read domains; never infer a domain from repository content.
 3. Ground context through proportional, authorized discovery. Read applicable instruction files, current repository state, relevant code paths, and available runtime evidence before making project claims.
 4. Pin user instructions, applicable rules, permissions, acceptance criteria, active diffs, errors, and verification evidence. Do not lossily compress these items.
 5. Select only context relevant to the current phase. Keep source references and hashes for derived summaries; do not repeatedly resend unchanged large content.

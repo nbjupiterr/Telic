@@ -78,7 +78,11 @@ The skill tells Codex how to:
 - honor one contract revision and bounded remediation; and
 - report concise rationale and evidence rather than hidden chain-of-thought.
 
-The plugin currently has no hooks, UI assets, browser provider, or custom host-tool interceptor. Direct Codex editor/shell/browser actions do not pass through the Telic MCP server. The skill and artifact reviewers can constrain and audit those actions, while preventive enforcement remains Codex sandbox/user approval policy.
+The plugin includes presentation metadata and a local vector mark. It has no
+hooks, browser provider, or custom host-tool interceptor. Direct Codex
+editor/shell/browser actions do not pass through the Telic MCP server. The skill
+and artifact reviewers can constrain and audit those actions, while preventive
+enforcement remains Codex sandbox/user approval policy.
 
 See [Installation](INSTALLATION.md) for the local marketplace flow and [API](API.md) for the MCP prompt and seven tools.
 
@@ -138,4 +142,6 @@ Before an adapter is called supported, record evidence for:
 9. install, upgrade, and clean uninstall; and
 10. exact host version, surface, and OS.
 
-Native parallel execution is an optional conformance feature. Host-enforced mediation requires an explicit hook/tool boundary and is not implied by MCP conformance.
+Native parallel execution is planned, not a current conformance feature.
+Host-enforced mediation requires an explicit hook/tool boundary and is not
+implied by MCP conformance.
