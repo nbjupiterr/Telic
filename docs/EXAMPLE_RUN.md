@@ -203,7 +203,7 @@ Agent 2 returns `contract-002` with AC-3, API health/log checks, explicit altern
 WorkPlan:
   id: plan-001
   task_contract_ref: artifact://run-001/contract-002
-  execution_mode: parallel
+  execution_mode: serial
   nodes:
     - id: browser-investigation
       objective: Capture the failed request, status, response, and console error.
@@ -226,7 +226,7 @@ WorkPlan:
     - a permission boundary blocks further investigation.
 ```
 
-The controller validates that every node is read-only and no broader than the TaskContract. Because this simulated Codex host advertises native subagents, Agent 4 may run the three independent nodes concurrently. On a host without subagents, the same nodes run serially with the same schemas and permissions.
+The controller validates that every node is read-only and no broader than the TaskContract, then authorizes the three nodes in deterministic serial order. Native parallel scheduling remains a future adapter/controller capability; the current source preview does not claim it.
 
 ## 6. Agent 4 executes and returns evidence
 
@@ -370,7 +370,7 @@ Telic starts a new, linked run. Because the cause and correction are now known, 
 - Agent 1's story role produced an authoritative grounded frame, not fiction.
 - Agent 2 compiled a typed contract; named prompt-framework formatting did not determine the score.
 - Agent 1 used its single revision on a concrete evidence gap.
-- Agent 3 planned parallel work, while the protocol retained a serial fallback.
+- Agent 3 planned three bounded serial investigations with separate evidence.
 - Agent 4's workers returned typed evidence instead of unstructured agent conversations.
 - Agent 3 verified acceptance criteria and permissions.
 - Agent 5 independently checked the actual user outcome without inventing scope.

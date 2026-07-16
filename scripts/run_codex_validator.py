@@ -90,7 +90,7 @@ def ensure_validator_environment() -> Path:
     return python
 
 
-def validator_command(kind: str, python: Path) -> list[str]:
+def validator_path(kind: str) -> tuple[Path, Path]:
     codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")).expanduser()
     if kind == "plugin":
         validator = (
@@ -118,12 +118,18 @@ def validator_command(kind: str, python: Path) -> list[str]:
             f"Official {kind} validator not found at {validator}. "
             "Install the Codex system skills or set CODEX_HOME."
         )
+    return validator, target
+
+
+def validator_command(kind: str, python: Path) -> list[str]:
+    validator, target = validator_path(kind)
     return [str(python), str(validator), str(target)]
 
 
 def main() -> int:
     args = parse_args()
     try:
+        validator_path(args.kind)
         python = ensure_validator_environment()
         completed = subprocess.run(
             validator_command(args.kind, python), cwd=PROJECT_ROOT, check=False

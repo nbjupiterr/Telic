@@ -1,6 +1,6 @@
 # Telic architecture
 
-**Status:** Executable local control-plane slice with clearly separated planned extensions.
+**Status:** Executable local control plane with a Codex reference integration and six source-preview host packs.
 
 ## Objective
 
@@ -12,13 +12,13 @@ The architecture separates:
 - **control:** deterministic phase, budget, reference, and artifact acceptance;
 - **context:** local, bounded repository selection;
 - **persistence:** SQLite metadata plus immutable content-addressed bodies; and
-- **integration:** a local STDIO MCP facade and host-specific skill/plugin.
+- **integration:** a local STDIO MCP facade plus thin host skills and configuration.
 
 ## Current component map
 
 ```mermaid
 flowchart TB
-    U[Developer] --> S[Codex skill]
+    U[Developer] --> S[Host skill, command, or MCP prompt]
     S <--> M[Local STDIO MCP server]
     M --> C[RunController]
     M --> G[Repository grounder]
@@ -28,7 +28,8 @@ flowchart TB
     L --> V[CLI and MCP trace views]
     S --> H[Host model and native tools]
     H --> S
-    B[Future host/browser adapters] -. portable contracts .-> M
+    A[Source-preview host packs] -. adapter configuration .-> S
+    B[Future browser adapter] -. evidence contract .-> M
     I[Future visual inspector] -. read-only projection .-> L
 ```
 
@@ -50,7 +51,7 @@ Tree-sitter, LSP symbols, code graphs, and lossy compression are not implemented
 
 ### `@telic/mcp`
 
-Exposes seven tools over local STDIO: start, ground, next action, submit artifact/clarification, inspect run, retrieve artifact, and inspect trace. It composes protocol/core/context behavior and writes protocol JSON only to stdout.
+Exposes seven tools over local STDIO: start, ground, next action, submit artifact/clarification, inspect run, retrieve artifact, and inspect trace. It also exposes the host-neutral `telic_workflow` prompt. It composes protocol/core/context behavior and writes protocol JSON only to stdout.
 
 MCP is not a prompt interceptor, model service, native-agent API, or universal host-policy hook. It can fail a Telic artifact submission; it cannot prevent a direct host-native shell/editor/browser action that bypasses its tools.
 
@@ -60,7 +61,11 @@ Exposes source-built diagnostics and ledger views. It can start the MCP server, 
 
 ### `plugins/telic`
 
-Packages the first host integration: Codex plugin metadata, the `telic:telic` skill, local MCP configuration, and an esbuild-produced standalone server. The skill is the turn driver; no other adapter is shipped.
+Packages the Codex reference integration: plugin metadata, the `telic:telic` skill, local MCP configuration, and an esbuild-produced standalone server. The skill is the turn driver.
+
+### `adapters/`
+
+Contains source-preview packs for Claude Code, Antigravity, Cursor, Kiro, Cline, and Roo Code. Their host-specific manifests or project configuration point to the same generated standalone server and canonical skill. Repository checks validate their files and complete local STDIO handshakes. Those checks prove package shape and protocol compatibility, not every host's installation lifecycle or marketplace approval.
 
 ## Host-driven loop
 
@@ -86,7 +91,7 @@ sequenceDiagram
     H->>T: telic_get_artifact / telic_get_trace
 ```
 
-The controller returns only references needed by the phase. The host explicitly retrieves artifacts and authors the required output. A host may use native subagents for independent plan nodes when supported; logical serial execution is always the portable baseline.
+The controller returns only references needed by the phase. The host explicitly retrieves artifacts and authors the required output. The current controller accepts deterministic serial WorkPlans only. Native parallel scheduling remains planned; a host may still use a bounded subagent for a single authorized semantic role without claiming parallel plan execution.
 
 ## Phase state machine
 
@@ -182,7 +187,7 @@ Telic records concise decision summaries, not private chain-of-thought. A visual
 
 - enforceable host action mediation through supported hooks/tool wrappers;
 - browser/DevTools provider contract and synthetic-profile evidence;
-- multi-host adapters and conformance fixtures;
+- certified host installation lifecycles and wider adapter conformance;
 - richer multi-node scheduling/parallel lifecycle;
 - Tree-sitter/LSP/code-graph context providers;
 - read-only visual inspector;

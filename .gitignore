@@ -56,3 +56,9 @@ docs/HACKATHON.md
 docs/PRESENTATION_FLOW.md
 docs/VIDEO_SCRIPT_DRAFT.md
 docs/ROADMAP.md
+docs/AUDIT_HANDOFF.md
+
+# Roo's public adapter uses the same directory name as private Roo source.
+!adapters/roo-code/project/.roo/
+!adapters/roo-code/project/.roo/**
+adapters/**/dist/

@@ -34,6 +34,15 @@ Environment variables:
 
 Protocol JSON is written only to stdout. Diagnostics go to stderr.
 
+## MCP prompt
+
+The server exposes one host-neutral prompt, `telic_workflow`. It accepts the exact
+`original_request` and a required Telic `mode`, then returns instructions for the
+host model to drive the seven MCP tools in controller order. The prompt does not
+invoke a model, grant permissions, bypass host approvals, or intercept
+host-native tools. Clients without MCP prompt support can implement the same
+sequence directly from `telic_get_next_action`.
+
 ## MCP tools
 
 The server currently exposes exactly seven tools.
@@ -241,7 +250,8 @@ There is no per-run deletion command yet. To remove all Telic state for a reposi
 - The MCP facade does not intercept or authorize calls made directly through host-native tools.
 - MCP arguments and artifact schemas may change before a release.
 - No browser provider, remote API, HTTP transport, telemetry, or inspector ships in the current vertical slice.
-- Only the Codex plugin is packaged; other host adapter mappings are unimplemented.
+- Codex has the reference source plugin. Six non-Codex source packs pass local
+  config and transport checks but lack real-host lifecycle certification.
 - State integrity is designed for local correctness, not hostile same-user tamper resistance.
 - Trace responses are indexed and paginated, but age-based retention,
   automatic orphan-blob collection, and supported per-run deletion remain

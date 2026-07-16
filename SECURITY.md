@@ -19,7 +19,10 @@ Telic accepts a developer request, repository context, host-authored artifacts, 
 - model-authored contracts, plans, scores, evidence summaries, and claims; and
 - local run state containing proprietary source or credentials.
 
-AI roles propose semantic artifacts. Deterministic code validates Telic schemas, phases, references, budgets, and artifact-level mode/permission invariants. The current Codex skill drives the workflow; Telic itself does not call a model API.
+AI roles propose semantic artifacts. Deterministic code validates Telic schemas,
+phases, references, budgets, and artifact-level mode/permission invariants. The
+canonical host skill or `telic_workflow` MCP prompt drives the workflow; Telic
+itself does not call a model API.
 
 ## Current controls
 
@@ -76,7 +79,12 @@ AI roles propose semantic artifacts. Deterministic code validates Telic schemas,
 
 ### Host-native actions are outside Telic interception
 
-The MCP server validates calls made to Telic and the artifacts later submitted to the ledger. It does not intercept editor, repository, shell, runtime, browser, network, or subagent actions a host performs through its own tools. The Codex skill asks the host to follow `NextAction` and contract permissions, and review artifacts can reject or expose violations, but prevention depends on the host sandbox, approval UI, and user policy.
+The MCP server validates calls made to Telic and the artifacts later submitted
+to the ledger. It does not intercept editor, repository, shell, runtime,
+browser, network, or subagent actions a host performs through its own tools. The
+host skill asks the active model to follow `NextAction` and contract permissions,
+and review artifacts can reject or expose violations, but prevention depends on
+the host sandbox, approval UI, and user policy.
 
 Do not claim that installing the plugin creates a complete tool firewall.
 
@@ -108,7 +116,11 @@ garbage collection.
 
 ### Platform and adapter coverage is narrow
 
-Only the source-built Codex plugin is packaged. Other hosts and Codex surfaces/platforms are not security-certified. A host's MCP support alone does not prove that its permissions, lifecycle, or tool behavior satisfy Telic's adapter assumptions.
+The source tree includes a Codex reference plugin and six experimental host
+packs. Non-Codex hosts and individual Codex surfaces/platforms are not
+security-certified. A host's MCP support or successful transport handshake does
+not prove that its permissions, lifecycle, or tool behavior satisfy Telic's
+adapter assumptions.
 
 ## Required behavior for adapters and future providers
 

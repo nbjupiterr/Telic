@@ -1,6 +1,9 @@
 # Host adapters
 
-**Status:** A source-built Codex plugin is present. No Claude Code, Cursor, Antigravity, Kiro, or browser adapter ships today.
+**Status:** A source-built Codex plugin and six experimental host packs are
+present. Every pack passes repository validation and a local STDIO handshake.
+Antigravity and Kiro schemas also pass the locally installed host CLIs. None of
+the non-Codex packs has completed its real-host lifecycle certification.
 
 ## Boundary
 
@@ -10,14 +13,15 @@ MCP is the deterministic tool and ledger boundary. It is not a universal prompt 
 
 The no-extra-model-API flow is:
 
-1. The user or host explicitly activates the Telic workflow.
+1. The user or host explicitly activates the Telic skill, command, or
+   `telic_workflow` MCP prompt.
 2. The adapter calls `telic_start_run`, then passes its action/version tokens to `telic_ground_context`.
 3. It asks `telic_get_next_action` for the one legal role and output schema.
 4. The active host model performs that logical role with bounded references.
 5. The adapter submits the canonical artifact through `telic_submit_artifact` with the latest action/version tokens.
 6. The loop ends on clarification or a terminal report.
 
-When native subagents are available, an adapter may map independent work to them. When they are unavailable or unknown, the same host model performs explicit logical roles serially. Telic never claims five persistent model processes.
+When native subagents are available, an adapter may isolate one controller-authorized semantic role in a bounded child. The current controller still advances WorkPlan nodes serially. When subagents are unavailable or unknown, the same host model performs every logical role serially. Telic never claims five persistent model processes.
 
 ## Portable responsibilities
 
@@ -29,7 +33,7 @@ The current portable packages own:
 - requested mode and effective permission projection;
 - repository inventory, ranking, budgets, and source provenance;
 - SQLite/content-addressed local persistence; and
-- seven STDIO MCP operations plus CLI inspection.
+- seven STDIO MCP operations, one portable workflow prompt, and CLI inspection.
 
 They do not own host prompt routing, model inference, native agent creation, editor UI, or host tool approvals.
 
@@ -76,7 +80,7 @@ The skill tells Codex how to:
 
 The plugin currently has no hooks, UI assets, browser provider, or custom host-tool interceptor. Direct Codex editor/shell/browser actions do not pass through the Telic MCP server. The skill and artifact reviewers can constrain and audit those actions, while preventive enforcement remains Codex sandbox/user approval policy.
 
-See [Installation](INSTALLATION.md) for the local marketplace flow and [API](API.md) for the seven tools.
+See [Installation](INSTALLATION.md) for the local marketplace flow and [API](API.md) for the MCP prompt and seven tools.
 
 ## Capability negotiation
 
@@ -84,17 +88,40 @@ A run records the host name, native-subagent state (`available`, `unavailable`, 
 
 Portable capability identifiers include repository read/write, shell inspection/execution, runtime inspection/restart, browser inspection/mutation, network read/external write, and subagent spawning. An adapter should advertise only capabilities it can actually use on the current surface. Missing optional capability causes a downgrade; a capability required for an acceptance criterion causes an honest partial/blocked result or a material clarification.
 
-## Planned adapters
+## Source-preview adapter packs
 
-| Target      | Candidate invocation                                     | What must be proven before compatibility is claimed                                         | Status         |
-| ----------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
-| Codex       | Bundled plugin skill + local MCP                         | Clean install, representative run, lifecycle, upgrade/uninstall, claimed surfaces/platforms | Source preview |
-| Claude Code | Native skill/command plus MCP when available             | Rule priority, permission mapping, model-turn driving, artifact round trip, lifecycle       | Planned        |
-| Cursor      | Explicit rule/command or extension plus MCP              | Workspace rules, tool approvals, CLI/IDE differences, lifecycle                             | Planned        |
-| Antigravity | Surface selected after a compatibility spike             | Invocation, permissions, context, agents, MCP/process behavior                              | Research       |
-| Kiro CLI    | CLI-native workflow selected after a compatibility spike | Spec/workflow mapping, permissions, MCP/process behavior                                    | Research       |
+`npm run build` copies the canonical skill and model-free MCP bundle into each
+pack. `npm run adapters:validate` checks paths, hashes, approval defaults, and
+host-specific configuration. The adapter smoke test launches every generated
+server and verifies `telic_workflow` plus the exact seven tools.
 
-No future adapter should promise identical behavior merely because its host supports MCP. Portability comes from the shared artifact protocol and explicit capability downgrades.
+| Target          | Preferred activation               | Pack shape                 | Evidence and remaining boundary                                     |
+| --------------- | ---------------------------------- | -------------------------- | ------------------------------------------------------------------- |
+| Codex           | `$telic:telic`                     | Native source plugin       | Reference pack; full clean lifecycle remains a release gate         |
+| Claude Code     | `/telic:telic`                     | Native source plugin       | Config and transport tested; Claude lifecycle untested              |
+| Antigravity CLI | `/telic`                           | Native source plugin       | `agy 1.1.1` schema passes; installed working directory unproven     |
+| Cursor          | `/telic`                           | Project `.cursor/` overlay | Config and transport tested; IDE/CLI lifecycle untested             |
+| Kiro CLI        | `/agent swap telic`, then `/telic` | Project `.kiro/` overlay   | `kiro-cli 2.12.1` schema passes; lifecycle untested                 |
+| Cline           | `/telic`                           | Project `.cline/` overlay  | Experimental Skills must be enabled; MCP UI may still need checking |
+| Roo Code        | `/telic`                           | Legacy `.roo/` overlay     | Confirm installed version; upstream routes and layouts have changed |
+
+The complete layouts and cautions are in [`adapters/README.md`](../adapters/README.md).
+No adapter should promise identical behavior merely because its host supports
+MCP. Portability comes from the shared artifact protocol and explicit
+capability downgrades.
+
+## Extension and cloud boundary
+
+The active AI extension owns its models, tools, rules, and MCP connections. An
+outer VS Code-compatible editor does not make separate extensions share those
+capabilities. Codex inside Antigravity can use the Codex plugin; Antigravity's
+native Agent panel needs the Antigravity pack. Roo, Cline, and Cursor likewise
+cannot inherit another extension's registered Telic server.
+
+A local extension can use Telic when it supports STDIO MCP and a workflow
+activation surface. A cloud-only agent cannot reach the user's local Telic
+process unless it can install and run the package inside its own sandbox or a
+separately secured remote MCP transport is provided.
 
 ## Adapter conformance target
 

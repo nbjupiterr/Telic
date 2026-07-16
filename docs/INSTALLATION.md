@@ -1,13 +1,17 @@
 # Installation and local runtime
 
-**Status: source preview.** The repository can be built, tested, run as a STDIO MCP server, and loaded through its local Codex marketplace. There is no public npm package, remote marketplace, signed release, or supported clean-machine distribution yet.
+**Status: source preview.** The repository can be built, tested, run as a STDIO
+MCP server, loaded through its local Codex marketplace, and materialized into six
+experimental host packs. There is no public npm package, remote marketplace,
+signed release, or supported clean-machine distribution yet.
 
 ## Requirements
 
 - Node.js `>=24.15.0`
 - npm and the checked-in `package-lock.json`
-- Codex with plugin support for the host-native preview
-- Python 3 with `venv` for official Codex plugin/skill validation
+- Codex with plugin support for the Codex-native preview
+- optional Python 3 with `venv` and installed Codex system skills for the
+  official Codex-only validation pass
 - optional Git and ripgrep; context discovery falls back to the filesystem when unavailable
 
 No separate model API key, browser package, database server, service manager, open port, or global npm install is required.
@@ -23,19 +27,27 @@ npm test
 npm run test:coverage
 npm run typecheck
 npm run format:check
-npm run plugin:validate
-npm run skill:validate
+npm run check
 node packages/cli/dist/bin.js doctor --json
 ```
 
-`npm run build` compiles the workspaces and regenerates
-`plugins/telic/dist/mcp/server.js`. `npm run check` runs the maintained aggregate
-check, including the marketplace validator. Plugin/skill validation uses the
-official validator scripts from `CODEX_HOME` (default `~/.codex`). On its first
-run, the wrapper creates a project-local ignored virtual environment under
-`.cache/` and downloads the hash-pinned PyYAML `6.0.3` source archive from PyPI;
-later runs reuse it. That validator-only bootstrap is the only check above that
-needs network access after `npm ci`.
+`npm run build` compiles the workspaces, regenerates
+`plugins/telic/dist/mcp/server.js`, and synchronizes the canonical skill and
+bundle into the adapter packs. `npm run check` is clean-runner-safe: it runs
+formatting, build, the threshold-enforced coverage suite, repository-local Codex
+asset validation, marketplace validation, and adapter validation.
+
+When Codex's official validator scripts are installed under `CODEX_HOME`
+(default `~/.codex`), add the authoritative host-specific pass:
+
+```bash
+npm run check:official
+```
+
+The official wrapper creates an ignored virtual environment under `.cache/`
+and installs hash-pinned PyYAML `6.0.3` on first use. It checks for the
+machine-local validator before bootstrapping. Those official scripts are not a
+repository dependency and are therefore not required by portable CI.
 
 The packages are private workspace packages. `npm ci` installs them for development; it does not publish or globally install Telic.
 
@@ -79,13 +91,18 @@ codex mcp list --json
 
 The marketplace manifest currently names itself `personal`. If Codex reports a different configured name or a naming collision, use the name returned by the first command. Start a fresh Codex session after installation so skill and MCP discovery use the installed snapshot.
 
-An initial prompt can explicitly activate the installed skill:
+Use `/skills` to select Telic, or explicitly activate the installed skill in a
+prompt:
 
 ```text
 Use $telic:telic to investigate this repository. Analyze only; do not change files.
 ```
 
 This is a development installation from the current working tree, not a published judge path. It modifies the user's Codex marketplace/plugin configuration, so review the displayed paths and output before proceeding.
+
+Codex reserves slash commands for its command surface. Reusable skill workflows
+use `/skills` or a `$skill` mention. Do not add a deprecated custom prompt only
+to manufacture `/telic` in Codex.
 
 ### Remove the preview install
 
@@ -97,6 +114,30 @@ codex plugin marketplace remove personal --json
 ```
 
 These commands remove Codex's installed plugin/cache and marketplace entry. They do not remove the source checkout or Telic run state.
+
+## Materialize another host pack
+
+Build and validate the shared packs first:
+
+```bash
+npm run build
+npm run adapters:validate
+npm run adapters:test
+```
+
+When `agy` or `kiro-cli` is already installed, their native schema validators
+can also run:
+
+```bash
+npm run adapters:validate:native
+```
+
+The Claude Code and Antigravity directories are plugin-shaped source previews.
+Cursor, Kiro, Cline, and Roo are project overlays that must be merged into the
+target repository rather than copied over existing configuration blindly. See
+[`adapters/README.md`](../adapters/README.md) for exact paths, activation names,
+and host-specific cautions. A successful local MCP handshake does not certify
+install, permission, upgrade, or uninstall behavior in that host.
 
 ## Runtime lifecycle
 
@@ -141,28 +182,36 @@ Do not point `TELIC_STATE_DIR` inside a repository you may commit. Telic rejects
 The CLI reports the resolved location:
 
 ```bash
-node packages/cli/dist/bin.js doctor --repo "$PWD" --json
+TELIC_STATE_DIR=/tmp/telic-demo-state \
+  node packages/cli/dist/bin.js doctor --repo "$PWD" --json
 ```
 
 ## Inspect an existing run
 
 ```bash
-node packages/cli/dist/bin.js status RUN_ID --repo "$PWD" --json
-node packages/cli/dist/bin.js trace RUN_ID --repo "$PWD" --json
-node packages/cli/dist/bin.js artifact RUN_ID ARTIFACT_ID --repo "$PWD" --json
+TELIC_STATE_DIR=/tmp/telic-demo-state \
+  node packages/cli/dist/bin.js status RUN_ID --repo "$PWD" --json
+TELIC_STATE_DIR=/tmp/telic-demo-state \
+  node packages/cli/dist/bin.js trace RUN_ID --repo "$PWD" --json
+TELIC_STATE_DIR=/tmp/telic-demo-state \
+  node packages/cli/dist/bin.js artifact RUN_ID ARTIFACT_ID --repo "$PWD" --json
 ```
 
-These commands require a ledger for the selected repository. They are read-only ledger views; there is no visual inspector yet.
+These commands require the same state directory used when the MCP server created
+the run. Omit the prefix when the server used the default. They are read-only
+ledger views; there is no visual inspector yet.
 
 ## Current support matrix
 
-| Host/platform                                          | Current claim       | Notes                                                                             |
-| ------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------- |
-| Codex plugin from a Linux source checkout              | Development preview | Plugin, skill, local marketplace, and bundled STDIO MCP are present               |
-| Codex CLI/IDE/desktop as separately certified surfaces | Not certified       | Requires clean install, lifecycle, and interaction evidence per surface           |
-| macOS or Windows/WSL                                   | Not certified       | Node code is intended to be portable; platform lifecycle tests are still required |
-| Claude Code, Cursor, Antigravity, Kiro                 | No adapter shipped  | MCP support alone does not establish semantic integration                         |
-| Browser/DevTools providers                             | No provider shipped | Optional provider boundary remains planned                                        |
+| Host/platform                                          | Current claim       | Notes                                                                                         |
+| ------------------------------------------------------ | ------------------- | --------------------------------------------------------------------------------------------- |
+| Codex plugin from a Linux source checkout              | Development preview | Plugin, skill, local marketplace, and bundled STDIO MCP are present                           |
+| Six non-Codex source packs                             | Experimental        | Config, generated bundle, skill sync, and STDIO handshake tested; lifecycle untested          |
+| Antigravity CLI and Kiro CLI schemas                   | Locally validated   | `agy 1.1.1` and `kiro-cli 2.12.1`; installed host lifecycle remains untested                  |
+| Codex CLI/IDE/desktop as separately certified surfaces | Not certified       | Requires clean install, lifecycle, and interaction evidence per surface                       |
+| macOS                                                  | CI candidate        | CI is configured; require a passing clean run before claiming compatibility                   |
+| Native Windows or WSL                                  | Not certified       | Filesystem safety, permission semantics, path handling, and lifecycle need dedicated evidence |
+| Browser/DevTools providers                             | No provider shipped | Optional provider boundary remains planned                                                    |
 
 ## Troubleshooting
 
@@ -194,3 +243,20 @@ checksums/provenance, clean-machine install and uninstall evidence, tested
 upgrade behavior, and a monitored vulnerability-reporting channel. Until then,
 do not present source-preview commands as a stable end-user installation
 contract.
+
+### Planned `npx` shape
+
+The simplest public distribution is one bundled runner rather than five
+independently versioned workspace packages. A future package could expose:
+
+```bash
+npx -y @dukeabaddon/telic doctor
+npx -y @dukeabaddon/telic mcp
+```
+
+Publication requires a chosen available package name, npm account or
+organization ownership, explicit public-publish approval, trusted-publisher or
+local npm authentication, and a monitored vulnerability-reporting contact. The
+package still needs `bin`, an exact file allowlist, license/repository metadata,
+packed-tarball inspection, clean temporary installation, doctor, and MCP
+handshake tests. It does not need a model API key.

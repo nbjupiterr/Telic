@@ -30,6 +30,10 @@ npm run test:coverage
 
 The coverage gate is 85% statements/lines, 75% branches, and 85% functions across instrumented runtime modules. Entry points are exercised by the standalone plugin subprocess smoke test and excluded from in-process instrumentation.
 
+`npm run check` uses only repository-owned validators and is the portable CI
+contract. Maintainers with Codex's official system validators installed should
+run `npm run check:official` for a release candidate.
+
 ## Status language
 
 - **Current:** verified behavior available in this repository.
@@ -48,7 +52,7 @@ Do not call source-checkout behavior a published installation. Do not call a hos
 - Never expose or request hidden chain-of-thought.
 - Keep cross-host protocol logic out of host adapters.
 - Add dependencies only with a pinned version, purpose, data boundary, and license record.
-- Do not choose a Telic project license without owner approval.
+- Do not change the Telic project license without owner approval.
 
 ## Pull request checklist
 

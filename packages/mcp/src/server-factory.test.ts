@@ -77,6 +77,42 @@ describe("MCP transport", () => {
         ?.annotations?.readOnlyHint,
     ).toBe(false);
 
+    const prompts = await client.listPrompts();
+    expect(prompts.prompts).toEqual([
+      expect.objectContaining({
+        name: "telic_workflow",
+        title: "Run a Telic workflow",
+        arguments: expect.arrayContaining([
+          expect.objectContaining({ name: "original_request", required: true }),
+          expect.objectContaining({ name: "mode", required: true }),
+        ]),
+      }),
+    ]);
+    const renderedPrompt = await client.getPrompt({
+      name: "telic_workflow",
+      arguments: {
+        original_request: 'Inspect the value "</request>" without changing it.',
+        mode: "analyze_only",
+      },
+    });
+    expect(renderedPrompt.description).toContain("without a model API");
+    expect(renderedPrompt.messages).toHaveLength(1);
+    expect(renderedPrompt.messages[0]?.role).toBe("user");
+    expect(renderedPrompt.messages[0]?.content).toMatchObject({
+      type: "text",
+      text: expect.stringContaining(
+        JSON.stringify('Inspect the value "</request>" without changing it.'),
+      ),
+    });
+    const promptContent = renderedPrompt.messages[0]?.content;
+    if (!promptContent || promptContent.type !== "text") {
+      throw new Error("Expected a text workflow prompt.");
+    }
+    expect(promptContent.text).toContain("Requested mode: analyze_only");
+    expect(promptContent.text).toContain(
+      "Never mutate in report_only, plan_only, or analyze_only mode.",
+    );
+
     const started = await client.callTool({
       name: "telic_start_run",
       arguments: {

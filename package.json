@@ -11,9 +11,10 @@
     "node": ">=24.15.0"
   },
   "scripts": {
-    "build": "npm run build:packages && npm run bundle:plugin",
+    "build": "npm run build:packages && npm run bundle:plugin && npm run bundle:adapters",
     "build:packages": "tsc -b",
     "bundle:plugin": "esbuild packages/mcp/src/server.ts --bundle --platform=node --format=esm --target=node24 --outfile=plugins/telic/dist/mcp/server.js",
+    "bundle:adapters": "node scripts/sync-adapters.mjs",
     "clean": "tsc -b --clean",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
@@ -22,8 +23,14 @@
     "format:check": "prettier --check .",
     "plugin:validate": "python3 scripts/run_codex_validator.py plugin",
     "skill:validate": "python3 scripts/run_codex_validator.py skill",
+    "codex-assets:validate": "node scripts/validate-codex-assets.mjs",
+    "codex:validate:official": "npm run plugin:validate && npm run skill:validate",
     "marketplace:validate": "node scripts/validate-marketplace.mjs .agents/plugins/marketplace.json",
-    "check": "npm run format:check && npm run build && npm test && npm run plugin:validate && npm run skill:validate && npm run marketplace:validate"
+    "adapters:validate": "node scripts/validate-adapters.mjs",
+    "adapters:validate:native": "node scripts/validate-adapters.mjs --native",
+    "adapters:test": "vitest run test/adapter-packs.test.ts",
+    "check": "npm run format:check && npm run build && npm run test:coverage && npm run codex-assets:validate && npm run marketplace:validate && npm run adapters:validate",
+    "check:official": "npm run check && npm run codex:validate:official"
   },
   "devDependencies": {
     "@types/node": "26.1.1",

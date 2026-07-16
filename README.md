@@ -6,9 +6,10 @@ Telic is a local MCP control plane for coding agents. It helps an active coding
 host turn an ambiguous request into a grounded plan, inspectable work, verified
 results, and an honest final report.
 
-**Status:** executable source preview. The current packaged integration is a
-Codex plugin. Telic does not call a model API, require a hosted service, or
-claim that it can intercept every action taken by an IDE.
+**Status:** executable source preview. Codex has the reference plugin. Six
+additional host packs are available as experimental source adapters. Telic does
+not call a model API, require a hosted service, or claim that it can intercept
+every action taken by an IDE.
 
 ![Telic workflow: Prompt, Restructure, Evaluate, Act, Verify, Report](assets/telic-hero.png)
 
@@ -66,23 +67,32 @@ requires a new run. It does not run an unlimited autonomous loop.
   metadata, and immutable content-addressed artifact bodies.
 - `@telic/context` — bounded Git/ripgrep/filesystem grounding with path,
   symlink, duplicate, size, and heuristic secret controls.
-- `@telic/mcp` — seven-tool local STDIO MCP server.
+- `@telic/mcp` — seven-tool local STDIO MCP server plus the portable
+  `telic_workflow` prompt.
 - `@telic/cli` — local `doctor`, `status`, `trace`, `artifact`, and `mcp`
   diagnostics.
 - `plugins/telic` — Codex skill, marketplace metadata, MCP configuration, and
   standalone bundled server.
+- `adapters/` — source-preview packs for Claude Code, Antigravity, Cursor, Kiro,
+  Cline, and Roo Code.
 
-## Quick start
+## Build from source
 
 Requirements: Node.js `>=24.15.0` and npm. Git and ripgrep improve discovery but
 are optional.
 
 ```bash
+git clone https://github.com/Dukeabaddon/Telic.git
+cd Telic
 npm ci
 npm run build
 npm test
 node packages/cli/dist/bin.js doctor --json
 ```
+
+The doctor command should return JSON with `"ok": true`. This builds Telic; the
+next section connects it to Codex. Downloading a source archive is also valid
+when Git is unavailable.
 
 The normal state directory is outside the repository:
 
@@ -103,7 +113,8 @@ codex plugin list --json
 codex mcp list --json
 ```
 
-Restart Codex and activate the skill when needed:
+Restart Codex. Open `/skills` and select Telic, or mention the installed skill
+directly:
 
 ```text
 Use $telic:telic to investigate this repository. Analyze only; do not change files.
@@ -112,7 +123,12 @@ Use $telic:telic to investigate this repository. Analyze only; do not change fil
 This is a local development installation. It does not publish Telic to a public
 plugin directory. See [installation](docs/INSTALLATION.md).
 
-## Use the MCP server directly
+## Advanced: connect a custom MCP client
+
+The bundled process is a local STDIO MCP server. A compatible host normally
+launches it and communicates through stdin/stdout; it is not a web server or an
+interactive terminal application. Running this command by hand will wait for
+an MCP client until you stop it with `Ctrl-C`.
 
 ```bash
 TELIC_REPOSITORY_ROOT="$PWD" \
@@ -120,19 +136,68 @@ TELIC_STATE_DIR="$HOME/.local/state/telic-demo" \
 node plugins/telic/dist/mcp/server.js
 ```
 
+Equivalent client configuration uses absolute paths:
+
+```json
+{
+  "mcpServers": {
+    "telic": {
+      "command": "node",
+      "args": ["/absolute/path/to/Telic/plugins/telic/dist/mcp/server.js"],
+      "env": {
+        "TELIC_REPOSITORY_ROOT": "/absolute/path/to/target-project",
+        "TELIC_STATE_DIR": "/absolute/path/outside-the-project/telic-state"
+      }
+    }
+  }
+}
+```
+
 The server uses stdout only for MCP protocol traffic and stderr for diagnostics.
 It does not open a listening port or require a separate database service.
+This path is mainly for adapter development, transport debugging, and custom
+MCP clients. MCP connectivity alone does not make a host follow Telic's full
+semantic workflow. See the [source-preview demo](docs/DEMO.md).
 
-## Other coding hosts
+## Choose your host
 
-The protocol and MCP server are designed to be portable. Any MCP-capable host
-can potentially connect to the local STDIO server, but the current skill,
-marketplace installation, and lifecycle tests are Codex-specific.
+One workflow name has different host-native spellings. Use `/telic` where the
+host supports that form. In Codex, `/skills` opens the skill selector and
+`$telic:telic` explicitly invokes the installed skill; a literal `/telic` is not
+the Codex skill syntax.
 
-Claude Code, Cursor, Antigravity, Kiro, browser providers, and visual inspectors
-are planned integrations, not current compatibility claims. MCP connectivity
-alone does not provide Telic's host-specific skill behavior or guarantee that
-native tools pass through Telic.
+| Active coding host | Activation                         | Source pack                        | Current evidence                                         |
+| ------------------ | ---------------------------------- | ---------------------------------- | -------------------------------------------------------- |
+| Codex              | `/skills` or `$telic:telic`        | `plugins/telic/`                   | Reference source plugin; local validation and smoke test |
+| Claude Code        | `/telic:telic`                     | `adapters/claude-code/telic/`      | Config and STDIO smoke test; lifecycle untested          |
+| Antigravity CLI    | `/telic`                           | `adapters/antigravity/telic/`      | CLI schema and preview-root smoke test                   |
+| Cursor             | `/telic`                           | `adapters/cursor/project/.cursor/` | Project config and STDIO smoke test                      |
+| Kiro CLI           | `/agent swap telic`, then `/telic` | `adapters/kiro/project/.kiro/`     | CLI schema and STDIO smoke test                          |
+| Cline              | `/telic`                           | `adapters/cline/project/.cline/`   | Project config smoke test; Skills must be enabled        |
+| Roo Code           | `/telic`                           | `adapters/roo-code/project/.roo/`  | Legacy project adapter; confirm the installed version    |
+
+These are source-preview claims, not marketplace or lifecycle certification.
+See [host adapter details](adapters/README.md).
+
+An editor shell does not make its AI extensions share agents or MCP tools. For
+example, Telic installed in the Codex extension inside Antigravity belongs to
+Codex; Antigravity's native Agent panel needs its own adapter. Any extension can
+use Telic when that extension can launch a local STDIO MCP server and activate a
+skill, command, rule, or MCP prompt. Cloud-only agents cannot reach a process on
+the user's laptop unless their sandbox can install it or a remote transport is
+provided.
+
+## Platform status
+
+| Platform         | Current claim                                                                   |
+| ---------------- | ------------------------------------------------------------------------------- |
+| Linux x86-64     | Active development and local verification platform                              |
+| Ubuntu and macOS | CI targets in the current candidate; compatibility requires a passing clean run |
+| Native Windows   | Not supported yet; filesystem safety and path behavior need dedicated work      |
+| WSL              | Not certified; treat it as a separate lifecycle target                          |
+
+Node.js is cross-platform, but runtime availability alone does not prove Telic's
+filesystem, permissions, plugin lifecycle, and cleanup behavior on that platform.
 
 ## Security boundary
 
@@ -153,6 +218,7 @@ packages/context/    bounded repository grounding
 packages/mcp/        local MCP service
 packages/cli/        diagnostics and ledger inspection
 plugins/telic/       Codex skill and bundled MCP server
+adapters/            experimental host-native source packs
 test/                cross-package conformance and plugin smoke tests
 docs/                user, protocol, architecture, and quality references
 ```
@@ -166,9 +232,17 @@ docs/                user, protocol, architecture, and quality references
 - [Quality model](docs/QUALITY.md)
 - [Adapter status](docs/ADAPTERS.md)
 - [Example run](docs/EXAMPLE_RUN.md)
+- [Source-preview demo](docs/DEMO.md)
 - [Current status and limitations](docs/STATUS.md)
 - [Third-party dependencies](docs/THIRD_PARTY.md)
 - [Contributing](CONTRIBUTING.md)
+
+## Help and contributing
+
+Use GitHub Issues for reproducible, non-sensitive defects. Do not post secrets,
+private source, or security proofs publicly. Read [SECURITY.md](SECURITY.md) for
+the current reporting limitation and [CONTRIBUTING.md](CONTRIBUTING.md) before
+submitting a change.
 
 ## License
 

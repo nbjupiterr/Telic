@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "telic": {
+      "command": "node",
+      "args": ["./dist/mcp/server.js"]
+    }
+  }
+}

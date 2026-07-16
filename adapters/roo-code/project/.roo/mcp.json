@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "telic": {
+      "command": "node",
+      "args": ["./.roo/telic/dist/mcp/server.js"],
+      "cwd": ".",
+      "alwaysAllow": [],
+      "disabled": false
+    }
+  }
+}

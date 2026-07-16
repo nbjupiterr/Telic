@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "telic": {
+      "command": "node",
+      "args": ["./.cline/telic/dist/mcp/server.js"]
+    }
+  }
+}

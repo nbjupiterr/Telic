@@ -83,6 +83,56 @@ const producerByArtifactType: Record<z.infer<typeof artifactType>, string> = {
   Evidence: "executor",
 };
 
+function registerPrompts(server: McpServer): void {
+  server.registerPrompt(
+    "telic_workflow",
+    {
+      title: "Run a Telic workflow",
+      description:
+        "Drive the host-neutral Telic artifact workflow for one immutable user request.",
+      argsSchema: {
+        original_request: z
+          .string()
+          .min(1)
+          .max(32_768)
+          .describe("The exact user request to preserve as immutable input."),
+        mode: mode.describe(
+          "The requested authority mode. Missing permission remains denial.",
+        ),
+      },
+    },
+    ({ original_request, mode: requestedMode }) => ({
+      description:
+        "Host-side instructions for driving Telic without a model API in the MCP server.",
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Drive this request through the Telic MCP workflow.
+
+Exact original request (JSON string):
+${JSON.stringify(original_request)}
+
+Requested mode: ${requestedMode}
+
+Workflow contract:
+1. Call telic_start_run once. Pass the exact original_request and requested mode. Report the real host name, available capabilities, and only authority the user actually granted. Never infer missing permission.
+2. Follow the returned nextAction. For context_discovery, call telic_ground_context with the current run_id, action_id, and expected_run_version.
+3. For each phase action, inspect its bounded inputRefs with telic_get_artifact as needed. Produce exactly its required output type and schema, then call telic_submit_artifact with the current action and run version. Use telic_get_next_action only to refresh the controller state.
+4. Do not skip, reorder, or invent phases. Submit optional supporting artifacts only when the current action permits them. Keep evidence and source references attached to claims.
+5. Honor effectivePermissions independently for every host-native tool call. Telic validates submitted artifacts but cannot intercept tools used directly by the host. Never mutate in report_only, plan_only, or analyze_only mode.
+6. If the controller returns a clarification action, ask exactly that bounded question and submit the selected choice. If it returns a terminal action, retrieve the referenced UserReport and present its evidence-backed result.
+7. Expose concise decisions, scores, provenance, and rationale summaries. Never request, reveal, or store hidden chain-of-thought.
+
+The Telic server is a deterministic controller and ledger. It does not call a model. You are responsible for authoring each requested artifact from the supplied schemas and evidence.`,
+          },
+        },
+      ],
+    }),
+  );
+}
+
 function registerTools(server: McpServer, service: TelicService): void {
   server.registerTool(
     "telic_start_run",
@@ -395,6 +445,7 @@ function registerTools(server: McpServer, service: TelicService): void {
 
 export function createTelicMcpServer(service: TelicService): McpServer {
   const server = new McpServer({ name: "telic", version: "0.1.0" });
+  registerPrompts(server);
   registerTools(server, service);
   return server;
 }

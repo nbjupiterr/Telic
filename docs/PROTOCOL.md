@@ -107,6 +107,11 @@ exposes `telic_start_run`, `telic_ground_context`,
 still change before the first compatibility release; [API.md](API.md) is the
 current transport reference.
 
+The optional `telic_workflow` MCP prompt gives compatible hosts a portable
+workflow entry point. It renders host-side instructions for an exact request and
+mode; it does not execute phases, invoke a model, expand authority, or replace
+`NextAction` as the controller's source of truth.
+
 MCP sampling or an external model key MUST NOT be required for the core workflow.
 
 ## 5. Identifiers and references

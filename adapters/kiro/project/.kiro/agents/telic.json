@@ -1,0 +1,19 @@
+{
+  "name": "telic",
+  "description": "Evidence-backed, permission-bounded coding workflow driver",
+  "prompt": "Use the Telic skill for explicitly requested coding workflows. Treat Telic MCP as a deterministic ledger and validator, not as another model. Preserve user authority and verify completion claims with evidence.",
+  "mcpServers": {
+    "telic": {
+      "command": "node",
+      "args": ["./.kiro/telic/dist/mcp/server.js"]
+    }
+  },
+  "tools": ["*"],
+  "toolAliases": {},
+  "allowedTools": [],
+  "resources": ["skill://.kiro/skills/**/SKILL.md"],
+  "hooks": {},
+  "toolsSettings": {},
+  "includeMcpJson": true,
+  "model": null
+}

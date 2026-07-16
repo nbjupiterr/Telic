@@ -9,10 +9,11 @@ For a user or hackathon judge:
 1. [Current status and limitations](STATUS.md)
 2. [Product definition](PRODUCT.md)
 3. [Source-preview installation](INSTALLATION.md)
-4. [API reference](API.md)
-5. [Architecture](ARCHITECTURE.md)
-6. [Security policy](../SECURITY.md)
-7. [Contribution guide](../CONTRIBUTING.md)
+4. [Source-preview demo](DEMO.md)
+5. [API reference](API.md)
+6. [Architecture](ARCHITECTURE.md)
+7. [Security policy](../SECURITY.md)
+8. [Contribution guide](../CONTRIBUTING.md)
 
 For an adapter or core contributor:
 
@@ -25,19 +26,20 @@ For an adapter or core contributor:
 
 ## Document map
 
-| File                                 | Question                                                      | Status                                    |
-| ------------------------------------ | ------------------------------------------------------------- | ----------------------------------------- |
-| [`STATUS.md`](STATUS.md)             | What works today, and where is the trust boundary?            | Current                                   |
-| [`API.md`](API.md)                   | What tools, commands, artifacts, and paths exist?             | Current source preview                    |
-| [`PRODUCT.md`](PRODUCT.md)           | Who is Telic for, and what outcome does it own?               | Current product; target experience marked |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | What implements the vertical slice, and what remains planned? | Mixed; boundaries labeled                 |
-| [`PROTOCOL.md`](PROTOCOL.md)         | What enters and leaves each logical phase?                    | Conceptual; schemas are authoritative     |
-| [`QUALITY.md`](QUALITY.md)           | What evidence is sufficient, and how are loops bounded?       | Normative design with partial enforcement |
-| [`EXAMPLE_RUN.md`](EXAMPLE_RUN.md)   | What should a complete diagnosis look like?                   | Illustrative, not a recorded run          |
-| [`ADAPTERS.md`](ADAPTERS.md)         | What is shared, and what changes by coding host?              | Codex current; others planned             |
-| [`INSTALLATION.md`](INSTALLATION.md) | How can a developer build and load the preview?               | Current source flow; release flow planned |
-| [`THIRD_PARTY.md`](THIRD_PARTY.md)   | What is installed, optional, or merely inspirational?         | Current inventory                         |
-| [`GLOSSARY.md`](GLOSSARY.md)         | What do skill, plugin, MCP, role, swarm, and trace mean?      | Current terminology                       |
+| File                                 | Question                                                      | Status                                      |
+| ------------------------------------ | ------------------------------------------------------------- | ------------------------------------------- |
+| [`STATUS.md`](STATUS.md)             | What works today, and where is the trust boundary?            | Current                                     |
+| [`API.md`](API.md)                   | What tools, commands, artifacts, and paths exist?             | Current source preview                      |
+| [`PRODUCT.md`](PRODUCT.md)           | Who is Telic for, and what outcome does it own?               | Current product; target experience marked   |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | What implements the vertical slice, and what remains planned? | Mixed; boundaries labeled                   |
+| [`PROTOCOL.md`](PROTOCOL.md)         | What enters and leaves each logical phase?                    | Conceptual; schemas are authoritative       |
+| [`QUALITY.md`](QUALITY.md)           | What evidence is sufficient, and how are loops bounded?       | Normative design with partial enforcement   |
+| [`EXAMPLE_RUN.md`](EXAMPLE_RUN.md)   | What should a complete diagnosis look like?                   | Illustrative, not a recorded run            |
+| [`ADAPTERS.md`](ADAPTERS.md)         | What is shared, and what changes by coding host?              | Codex reference; six experimental packs     |
+| [`INSTALLATION.md`](INSTALLATION.md) | How can a developer build and load the preview?               | Current source flow; release flow planned   |
+| [`DEMO.md`](DEMO.md)                 | How can a developer demonstrate the source preview safely?    | Codex current; Antigravity path exploratory |
+| [`THIRD_PARTY.md`](THIRD_PARTY.md)   | What is installed, optional, or merely inspirational?         | Current inventory                           |
+| [`GLOSSARY.md`](GLOSSARY.md)         | What do skill, plugin, MCP, role, swarm, and trace mean?      | Current terminology                         |
 
 ## Architecture decisions
 

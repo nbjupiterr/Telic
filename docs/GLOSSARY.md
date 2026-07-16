@@ -14,7 +14,7 @@ The AI development environment the user is already running, such as Codex, Claud
 
 ### Host adapter
 
-A thin host-specific layer that activates Telic and maps the host's rules, skills, tools, subagents, and permission surfaces to the portable Telic protocol. A source-built Codex plugin is the current first adapter; other hosts remain planned.
+A thin host-specific layer that activates Telic and maps the host's rules, skills, tools, subagents, and permission surfaces to the portable Telic protocol. Telic ships a source-built Codex reference plugin and six experimental host packs.
 
 ### Skill
 
@@ -22,7 +22,11 @@ A reusable workflow package centered on a `SKILL.md` instruction file, with opti
 
 ### Plugin
 
-An installable host package. In Codex, a plugin can distribute skills and can bundle MCP configuration, hooks, app mappings, and presentation assets. Telic currently has a local Codex plugin source bundle; its manifest is not the portable core or a published release.
+An installable host package. A plugin may distribute skills, MCP configuration,
+hooks, app mappings, and presentation assets according to that host's contract.
+Telic has a local Codex reference plugin and experimental Claude Code and
+Antigravity plugin-shaped packs. Their manifests are not the portable core or a
+published release.
 
 ### MCP
 
@@ -30,7 +34,7 @@ Model Context Protocol, a standard connection between an AI host and tools or co
 
 ### MCP server
 
-A local or remote process exposing MCP tools, resources, and instructions. The Telic source preview ships a local STDIO process exposing seven controller, context, trace, and artifact operations. It contains deterministic runtime behavior and does not call a model API.
+A local or remote process exposing MCP tools, resources, and prompts. The Telic source preview ships a local STDIO process exposing seven controller, context, trace, and artifact operations plus the `telic_workflow` prompt. It contains deterministic runtime behavior and does not call a model API.
 
 ### MCP tool
 

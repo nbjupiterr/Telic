@@ -43,6 +43,8 @@ Versions and license fields above were read from the installed direct package ma
 | [Git](https://git-scm.com/)                                  | Ignore-aware inventory, repository fingerprint/provenance | Fall back to ripgrep or filesystem inventory with warnings      |
 | [ripgrep](https://github.com/BurntSushi/ripgrep)             | Fast candidate inventory/search                           | Fall back to filesystem inventory                               |
 | Codex CLI/plugin validator scripts                           | Development plugin/skill validation                       | Validation command reports the missing development prerequisite |
+| Antigravity CLI (`agy`) `1.1.1`                              | Native Antigravity adapter schema validation              | Repository and transport validation still run                   |
+| Kiro CLI `2.12.1`                                            | Native Kiro custom-agent schema validation                | Repository and transport validation still run                   |
 | [Graphifyy](https://github.com/safishamsi/graphify) `0.8.13` | Development-only repository graph and navigation map      | Normal build, tests, and runtime are unaffected                 |
 | [Gate-MCP](https://github.com/Dukeabaddon/Gate-MCP) `0.5.5`  | Development-only graph queries and signature compression  | Normal build, tests, and runtime are unaffected                 |
 
@@ -51,7 +53,7 @@ not npm dependencies. Graphifyy and Gate-MCP were used during development from
 separate local checkouts; Graphifyy's generated map is ignored, Gate-MCP output
 is transient, and neither tool is bundled into the Codex plugin. Both local
 package manifests declared MIT when
-inspected on July 15, 2026. Their development-time token-saving estimates are not
+inspected on July 16, 2026. Their development-time token-saving estimates are not
 Telic runtime measurements or product claims.
 
 ## Optional integrations and inspirations

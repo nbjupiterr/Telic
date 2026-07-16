@@ -4,13 +4,13 @@
 
 ## Product summary
 
-Telic is a local, model-independent intent compiler and evidence ledger for coding agents. It converts an imprecise developer request into a repository-grounded, permission-aware task contract; bounds one semantic review; plans work; accepts evidence-backed results; and, on the full release path, produces an independently audited report. Early-block report normalization remains a release item.
+Telic is a local, model-independent intent compiler and evidence ledger for coding agents. It converts an imprecise developer request into a repository-grounded, permission-aware task contract; bounds one semantic review; plans work; accepts evidence-backed results; and produces an independently audited report. Early contract blocks now produce a blocked `UserReport`; cancellation and superseded-run closure remain narrower terminal cases.
 
 Telic runs inside the developer's existing coding environment. The host model authors semantic artifacts. The Telic runtime validates, stores, and advances them and never calls a model API.
 
 > From rough request to grounded contract to verified result, with every handoff inspectable.
 
-The repository currently proves the deterministic control-plane slice and a source-built Codex integration. It does not yet prove a polished end-user run across every mode or host. See [STATUS.md](STATUS.md).
+The repository currently proves the deterministic control-plane slice, a source-built Codex reference integration, and six experimental host packs. It does not yet prove a polished end-user run across every mode or host. See [STATUS.md](STATUS.md).
 
 ## Problem
 
@@ -24,7 +24,7 @@ Telic compiles that request into typed artifacts and uses bounded gates before a
 
 ## Users
 
-- **Agent-native developer:** wants better execution inside Codex today and other coding hosts later, without copying prompts into a separate site.
+- **Agent-native developer:** wants better execution inside an existing coding host without copying prompts into a separate site.
 - **Technical lead/reviewer:** wants acceptance criteria, rule coverage, exact evidence, bounded retries, and honest unresolved risk.
 - **Workflow/adapter author:** wants stable role handoffs and a portable protocol separated from host-specific commands and agents.
 
@@ -101,14 +101,18 @@ The host obtains each `NextAction`, performs the logical reasoning turn, and sub
 ## Current product surface
 
 - local protocol/controller/context/ledger packages;
-- seven-tool STDIO MCP server;
+- seven-tool STDIO MCP server plus the portable `telic_workflow` prompt;
 - source-built diagnostics and trace CLI;
-- Codex plugin and skill as the first host driver;
+- Codex plugin and skill as the reference host driver;
+- six experimental source packs for Claude Code, Antigravity, Cursor, Kiro, Cline, and Roo Code;
 - all five intent modes in the protocol, with conservative limits documented in [STATUS.md](STATUS.md);
 - content-addressed exact artifacts and bounded context manifests;
 - terminal trace output and artifact retrieval.
 
-Current source does **not** include browser/DevTools integration, a visual inspector, host-wide tool interception, another host adapter, a public package, or a hosted service.
+Current source does **not** include browser/DevTools integration, a visual
+inspector, host-wide tool interception, a certified non-Codex lifecycle, a
+public package, or a hosted service. Six non-Codex source adapter packs are
+experimental integration artifacts, not supported-release claims.
 
 ## Context efficiency
 
@@ -155,12 +159,12 @@ For the hackathon MVP, Telic succeeds when one clean Codex installation can comp
 
 ## Risks and controls
 
-| Risk                           | Control or current limit                                                                       |
-| ------------------------------ | ---------------------------------------------------------------------------------------------- |
-| More roles add latency/context | Serial fallback, bounded loops, exact references; direct-path optimization remains future work |
-| Scenario invents facts         | `ProblemFrame` separates facts/inferences/unknowns and requires provenance                     |
-| Review rewards prompt style    | Frozen rubric, hard gates, and evidence-backed acceptance mapping                              |
-| Agent expands authority        | Deterministic mode/phase/artifact checks; host-native prevention still relies on host policy   |
-| Evidence contains secrets      | Path/content heuristics and redaction metadata; not a complete secret scanner                  |
-| Local state is modified        | SHA checks and restricted local paths; not tamper-proof against a malicious same user          |
-| Cross-host behavior differs    | Portable schemas and explicit adapter conformance; only Codex currently packaged               |
+| Risk                           | Control or current limit                                                                            |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| More roles add latency/context | Serial fallback, bounded loops, exact references; direct-path optimization remains future work      |
+| Scenario invents facts         | `ProblemFrame` separates facts/inferences/unknowns and requires provenance                          |
+| Review rewards prompt style    | Frozen rubric, hard gates, and evidence-backed acceptance mapping                                   |
+| Agent expands authority        | Deterministic mode/phase/artifact checks; host-native prevention still relies on host policy        |
+| Evidence contains secrets      | Path/content heuristics and redaction metadata; not a complete secret scanner                       |
+| Local state is modified        | SHA checks and restricted local paths; not tamper-proof against a malicious same user               |
+| Cross-host behavior differs    | Portable schemas, one Codex reference, six checked preview packs, and explicit certification limits |

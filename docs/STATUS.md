@@ -1,6 +1,6 @@
 # Telic implementation status
 
-**Last checked:** July 15, 2026
+**Last checked:** July 16, 2026
 
 Telic is an executable, local source preview. It is suitable for development and hackathon demonstration, not yet a supported release. The canonical truth for serialization is `packages/protocol/src/`; this page distinguishes current behavior from design targets elsewhere in the documentation.
 
@@ -12,9 +12,9 @@ Telic is an executable, local source preview. It is suitable for development and
 | Controller      | Deterministic phase ordering, one user-facing clarification, one contract revision, one shared post-execution remediation, terminal reports, and mode-aware phase routing |
 | Persistence     | SQLite metadata/events plus immutable SHA-256-addressed JSON bodies; digest verification occurs on read                                                                   |
 | Context         | Bounded Git, ripgrep, or filesystem inventory; deterministic ranking; file/count/byte budgets; realpath and symlink containment; duplicate and heuristic secret exclusion |
-| MCP             | Local STDIO server with seven tools for run start, grounding, next action, artifact submission, run/artifact inspection, and trace inspection                             |
+| MCP             | Local STDIO server with seven tools plus a host-neutral `telic_workflow` prompt                                                                                           |
 | CLI             | Source-built `doctor`, `status`, `trace`, `artifact`, and `mcp` commands                                                                                                  |
-| Host package    | Codex plugin with a Telic skill, local MCP configuration, and standalone bundled server                                                                                   |
+| Host package    | Codex reference plugin plus six experimental source packs generated from one canonical skill and MCP bundle                                                               |
 | Model access    | None in the runtime; the active host model authors semantic artifacts                                                                                                     |
 | Network service | None required; normal transport is local STDIO                                                                                                                            |
 
@@ -33,7 +33,11 @@ choices terminate the current run; a permission expansion must be expressed in a
 new run. A second material boundary is recorded for audit but routes to a blocked
 report without another user question.
 
-The Codex skill is the semantic driver. Telic does not automatically intercept user prompts, invoke the Codex model, or guarantee separate agents. The run records whether native subagents are available, but the current controller accepts serial WorkPlans only and does not schedule parallel workers.
+The canonical Telic skill is the semantic driver. Compatible MCP clients may
+instead retrieve the host-neutral `telic_workflow` prompt. Telic does not
+automatically intercept user prompts, invoke a host model, or guarantee separate
+agents. The run records whether native subagents are available, but the current
+controller accepts serial WorkPlans only and does not schedule parallel workers.
 
 ## Security reality
 
@@ -67,7 +71,8 @@ This project is not a security boundary against a compromised host, OS account, 
 
 ## Not shipped yet
 
-- Claude Code, Cursor, Antigravity, and Kiro adapters or compatibility certification
+- real-host install, permission, lifecycle, upgrade, and uninstall certification
+  for the Claude Code, Cursor, Antigravity, Kiro, Cline, and Roo source packs
 - browser/DevTools providers and provider-driven evidence capture (the generic typed browser Evidence kind exists)
 - host-enforced mediation of every repository, shell, runtime, network, or browser action
 - visual inspector or web application
@@ -82,7 +87,14 @@ This project is not a security boundary against a compromised host, OS account, 
 
 ## Platform and distribution claim
 
-Only the source-built Codex plugin is present. It has a local marketplace entry for development and a bundled Node.js MCP server. That is not the same as a published marketplace release or broad Codex-surface certification. Linux is the active development environment; macOS, Windows/WSL, Codex graphical surfaces, and other hosts need clean-install and lifecycle evidence before being called supported.
+The source-built Codex plugin has a local marketplace entry and bundled Node.js
+MCP server. Six additional source packs pass repository validation and a local
+STDIO contract smoke test; Antigravity and Kiro also pass locally installed CLI
+schema validators. That is not the same as a published marketplace release or
+real-host certification. Linux x86-64 is the active development environment.
+Ubuntu and macOS are configured as CI targets in the current candidate, but a
+passing remote run is required before broadening the claim. Native Windows and
+WSL need explicit filesystem, permission, and lifecycle work.
 
 ## Next release gates
 
