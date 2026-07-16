@@ -31,9 +31,9 @@
     "composerIcon": "./assets/telic-mark.svg",
     "logo": "./assets/telic-mark.svg",
     "defaultPrompt": [
-      "Use Telic to diagnose this project without making changes.",
-      "Use Telic to analyze and fix this bug with evidence.",
-      "Use Telic to turn this request into a verified plan."
+      "Telic: diagnose this project without making changes.",
+      "Telic: analyze and fix this bug with evidence.",
+      "Telic: turn this request into a verified plan."
     ]
   },
   "mcpServers": "./.mcp.json"

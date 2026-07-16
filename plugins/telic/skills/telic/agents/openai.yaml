@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $telic:telic to compile and verify this coding request with evidence."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

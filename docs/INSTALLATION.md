@@ -133,12 +133,15 @@ The marketplace has the stable ID `dukeabaddon-telic`, which avoids collisions
 with a user's personal marketplace. Start a fresh Codex session after
 installation so skill and MCP discovery use the installed snapshot.
 
-Use `/skills` to select Telic, or explicitly activate the installed skill in a
-prompt:
+Use the portable natural-language activation in a new prompt:
 
 ```text
-Use $telic:telic to investigate this repository. Analyze only; do not change files.
+Telic: investigate this repository. Analyze only; do not change files.
 ```
+
+Telic enables description matching only for a request that asks for Telic by
+name. For deterministic manual selection in Codex, use `/skills` or
+`$telic:telic` as the technical fallback.
 
 This is a development installation from the current working tree, not a published judge path. It modifies the user's Codex marketplace/plugin configuration, so review the displayed paths and output before proceeding.
 
@@ -149,9 +152,8 @@ codex plugin marketplace add Dukeabaddon/Telic --json
 codex plugin add telic@dukeabaddon-telic --json
 ```
 
-Codex reserves slash commands for its command surface. Reusable skill workflows
-use `/skills` or a `$skill` mention. Do not add a deprecated custom prompt only
-to manufacture `/telic` in Codex.
+Codex reserves slash commands for its command surface. Do not add a deprecated
+custom prompt only to manufacture `/telic` in Codex.
 
 ### Remove the preview install
 
@@ -189,7 +191,7 @@ install, permission, upgrade, or uninstall behavior in that host.
 ## Runtime lifecycle
 
 ```text
-Codex activates telic:telic
+Codex resolves an explicit Telic request or selection
         |
         v
 Codex launches plugin-provided Telic STDIO process

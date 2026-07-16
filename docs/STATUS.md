@@ -33,7 +33,10 @@ choices terminate the current run; a permission expansion must be expressed in a
 new run. A second material boundary is recorded for audit but routes to a blocked
 report without another user question.
 
-The canonical Telic skill is the semantic driver and is explicitly opt-in.
+The canonical Telic skill is the semantic driver and remains explicitly opt-in.
+Description matching is enabled only so a request that asks for Telic by name,
+such as `Telic: <your request>`, can resolve without a qualified host command.
+Questions and discussions about Telic itself remain outside the workflow.
 Compatible MCP clients may
 instead retrieve the host-neutral `telic_workflow` prompt. Telic does not
 automatically intercept user prompts, invoke a host model, or guarantee separate

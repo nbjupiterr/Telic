@@ -87,9 +87,11 @@ describe("bundled Codex plugin MCP", () => {
   it("advertises the installed skill name and the critical adapter boundaries", () => {
     expect(skillInterface).toContain("$telic:telic");
     expect(skillInterface).toMatch(
-      /^policy:\s*$[\s\S]*?^\s+allow_implicit_invocation:\s*false\s*$/m,
+      /^policy:\s*$[\s\S]*?^\s+allow_implicit_invocation:\s*true\s*$/m,
     );
     expect(skillInstructions).toContain("$telic:telic");
+    expect(skillInstructions).toContain("`Telic: <request>`");
+    expect(skillInstructions).toContain("Do not activate for setup");
     expect(skillInstructions).toContain("is `analyze_only`, not `report_only`");
     expect(skillInstructions).toContain("requiredOutputSchema");
     expect(skillInstructions).toContain("does not intercept editor");

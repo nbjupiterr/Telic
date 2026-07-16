@@ -139,10 +139,16 @@ describe("source-preview host adapters", () => {
     expect(contracts).not.toContain("serial/parallel/mixed mode");
   });
 
-  it("uses host-native activation names without inventing one universal syntax", () => {
+  it("uses universal human intent with host-native activation fallbacks", () => {
     const skill = read("plugins/telic/skills/telic/SKILL.md");
-    expect(skill).toContain("Use only when the user explicitly");
-    expect(skill).toContain("Never auto-activate Telic");
+    const publicReadme = read("README.md");
+    const demo = read("docs/DEMO.md");
+    expect(skill).toContain("`Telic: <request>`");
+    expect(skill).toContain("Do not activate for setup");
+    expect(publicReadme).toContain("`Telic: <your request>`");
+    expect(publicReadme).toContain("technical fallback");
+    expect(demo).toContain("Telic: investigate");
+    expect(demo).not.toContain("Use $telic:telic to investigate");
     expect(skill).toContain("$telic:telic");
     expect(skill).toContain("/telic:telic");
     expect(skill).toContain("expose `/telic`");

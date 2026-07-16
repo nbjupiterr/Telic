@@ -50,13 +50,16 @@ Restart Codex or reload the IDE extension, then begin a new chat. The plugin
 already bundles Telic's MCP configuration; do not add a second Telic server
 manually.
 
-Use `/skills` or explicitly mention the installed skill:
+Start with the same short human-facing prefix in any host:
 
 ```text
-Use $telic:telic.
-This project keeps recommending the same result. I do not know whether the
-ranking is broken or the data is biased. Analyze only.
+Telic: this project keeps recommending the same result. I do not know whether
+the ranking is broken or the data is biased. Analyze only.
 ```
+
+The Codex skill matches this only because Telic was explicitly requested by
+name. Select Telic through `/skills` or use `$telic:telic` as the guaranteed
+technical fallback. A question about Telic itself does not start the workflow.
 
 `Analyze only` is ordinary language with a precise safety effect: Telic may
 investigate, but it must not edit files or mutate runtime state.
@@ -92,8 +95,9 @@ the extra structure pays for itself:
 - tasks needing an inspectable evidence trail.
 
 Skip Telic for simple questions, formatting, typo fixes, and obvious one-file
-edits. In Codex, use `/skills` or `$telic:telic`; a literal `/telic` is not the
-Codex skill syntax.
+edits. The portable request form is `Telic: <your request>`. In Codex, `/skills`
+or `$telic:telic` provides deterministic manual selection; a literal `/telic`
+is not the Codex skill syntax.
 
 ## How it works
 
@@ -168,7 +172,10 @@ workflow. See [Installation](docs/INSTALLATION.md).
 
 ## Host and platform compatibility
 
-| Host             | Activation                         | Current evidence                           |
+Use `Telic: <your request>` as the portable human intent. When a host does not
+support description-based skill matching, use its native fallback:
+
+| Host             | Native fallback                    | Current evidence                           |
 | ---------------- | ---------------------------------- | ------------------------------------------ |
 | Codex            | `/skills` or `$telic:telic`        | Reference plugin; install and smoke tested |
 | Claude Code      | `/telic:telic`                     | Source adapter; lifecycle not certified    |

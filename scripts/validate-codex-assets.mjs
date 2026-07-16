@@ -275,12 +275,17 @@ for (const required of [
   /^\s+short_description:\s*\S.+$/m,
   /^\s+default_prompt:\s*.+\$telic:telic.+$/m,
   /^policy:\s*$/m,
-  /^\s+allow_implicit_invocation:\s*false\s*$/m,
+  /^\s+allow_implicit_invocation:\s*true\s*$/m,
 ]) {
   if (!required.test(skillInterface)) {
     fail(
       "skills/telic/agents/openai.yaml is missing required interface metadata",
     );
+  }
+}
+for (const required of ["`Telic: <request>`", "Do not activate for setup"]) {
+  if (!skill.includes(required)) {
+    fail(`skills/telic/SKILL.md is missing activation boundary: ${required}`);
   }
 }
 

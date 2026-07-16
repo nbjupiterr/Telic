@@ -85,10 +85,10 @@ the Codex extension.
 Suggested demo request:
 
 ```text
-Use $telic:telic to investigate why this project is not talking to its API.
-Analyze only. Do not change files. Inspect repository evidence and available
-runtime evidence. If browser or DevTools access is unavailable, say so instead
-of inventing results.
+Telic: investigate why this project is not talking to its API. Analyze only.
+Do not change files. Inspect repository evidence and available runtime evidence.
+If browser or DevTools access is unavailable, say so instead of inventing
+results.
 ```
 
 Expected high-level flow:
@@ -174,7 +174,7 @@ rule, command, permission, and MCP configuration surfaces. An extension inside
 an editor is still its own host boundary. One extension cannot assume access to
 another extension's registered MCP tools or conversation.
 
-The repository includes experimental packs for all six hosts. Their activation
+The portable human request is `Telic: <your request>`. Host-native fallback
 syntax differs: Codex uses `/skills` or `$telic:telic`, Claude Code uses
 `/telic:telic`, Antigravity CLI, Cursor, Cline, and Roo use `/telic`, and Kiro
 uses `/agent swap telic` followed by `/telic`. These packs remain previews until

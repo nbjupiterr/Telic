@@ -13,8 +13,8 @@ MCP is the deterministic tool and ledger boundary. It is not a universal prompt 
 
 The no-extra-model-API flow is:
 
-1. The user or host explicitly activates the Telic skill, command, or
-   `telic_workflow` MCP prompt.
+1. The user explicitly asks Telic to perform the workflow, selects its skill,
+   uses a host command, or selects the `telic_workflow` MCP prompt.
 2. The adapter calls `telic_start_run`, then passes its action/version tokens to `telic_ground_context`.
 3. It asks `telic_get_next_action` for the one legal role and output schema.
 4. The active host model performs that logical role with bounded references.
@@ -94,12 +94,15 @@ Portable capability identifiers include repository read/write, shell inspection/
 
 ## Source-preview adapter packs
 
+`Telic: <your request>` is the portable human-facing intent. The table lists
+the deterministic native fallback when description-based matching is unavailable.
+
 `npm run build` copies the canonical skill and model-free MCP bundle into each
 pack. `npm run adapters:validate` checks paths, hashes, approval defaults, and
 host-specific configuration. The adapter smoke test launches every generated
 server and verifies `telic_workflow` plus the exact seven tools.
 
-| Target          | Preferred activation               | Pack shape                 | Evidence and remaining boundary                                     |
+| Target          | Native fallback                    | Pack shape                 | Evidence and remaining boundary                                     |
 | --------------- | ---------------------------------- | -------------------------- | ------------------------------------------------------------------- |
 | Codex           | `$telic:telic`                     | Native source plugin       | Reference pack; full clean lifecycle remains a release gate         |
 | Claude Code     | `/telic:telic`                     | Native source plugin       | Config and transport tested; Claude lifecycle untested              |

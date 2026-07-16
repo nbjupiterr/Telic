@@ -1,25 +1,30 @@
 ---
 name: telic
-description: Compile non-trivial coding requests into permission-bounded, repository-grounded, evidence-linked workflows and audit execution before reporting. Use only when the user explicitly names or selects Telic, invokes the host-specific Telic command, or explicitly asks for a Telic workflow. Never auto-activate for an ordinary coding request.
+description: Compile non-trivial coding requests into permission-bounded, repository-grounded, evidence-linked workflows and audit execution before reporting. Use when the user asks Telic by name to perform a coding workflow, starts a request with `Telic:`, selects the Telic skill, or invokes a host-specific Telic command. Do not activate for ordinary coding requests or for questions and discussions about Telic setup, installation, documentation, or design.
 ---
 
 # Telic
 
 Compile the user's request into typed handoffs, execute only authorized work, and release only claims supported by evidence. Use the active host model for every semantic decision. Use Telic MCP only as a deterministic state, schema, budget, and artifact boundary; never treat it as another reasoning agent.
 
-Invocation is host-specific. Codex can select Telic through `/skills` or invoke
-the plugin skill as `$telic:telic`; a literal `/telic` is not its skill syntax.
-The Claude Code plugin uses `/telic:telic`; Antigravity CLI, Cursor, Cline, and
-Roo Code expose `/telic`. Kiro switches with `/agent swap telic` and then uses
-`/telic`. Never assume one spelling works in every host.
+The portable human-facing activation is `Telic: <request>` or
+`Use Telic to <request>`. Treat either form as explicit user intent even when a
+host resolves it through description-based skill matching. Host-native fallback
+syntax still varies. Codex can select Telic through `/skills` or invoke the
+plugin skill as `$telic:telic`; a literal `/telic` is not its skill syntax. The
+Claude Code plugin uses `/telic:telic`; Antigravity CLI, Cursor, Cline, and Roo
+Code expose `/telic`. Kiro switches with `/agent swap telic` and then uses
+`/telic`.
 
 ## Activation boundary
 
-Use only when the user explicitly invokes Telic by name, selects its skill, or
-uses the host-specific Telic command. Never auto-activate Telic merely because a
-request involves diagnosis, planning, fixes, multiple files, or verification.
-Once activated, keep Telic active for that request unless the user cancels or a
-documented stop condition applies.
+Activate only when the user asks Telic to perform the coding workflow, selects
+its skill, or uses a host-specific Telic command. Do not activate for setup,
+installation, documentation, troubleshooting, or design questions about Telic
+itself. Do not activate merely because an ordinary request involves diagnosis,
+planning, fixes, multiple files, or verification. Once activated, keep Telic
+active for that request unless the user cancels or a documented stop condition
+applies.
 
 ## Preserve authority
 
