@@ -1291,11 +1291,11 @@ svg {
 }
 
 .page-intro-with-media {
-  padding-bottom: 36px;
+  padding-bottom: 64px;
 }
 
 .walkthrough-section {
-  padding-top: 0;
+  padding-top: 12px;
   padding-bottom: 48px;
 }
 
@@ -2560,10 +2560,11 @@ svg {
   }
 
   .page-intro-with-media {
-    padding-bottom: 28px;
+    padding-bottom: 48px;
   }
 
   .walkthrough-section {
+    padding-top: 8px;
     padding-bottom: 56px;
   }
 
