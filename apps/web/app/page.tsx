@@ -2,7 +2,6 @@ import {
   ArrowRight,
   Check,
   ChevronRight,
-  FileSearch,
   Code2,
   GitFork,
   Network,
@@ -12,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { DemoFrame } from "@/components/demo-frame";
+import { DemoVideo } from "@/components/demo-video";
 import { RoleExplorer } from "@/components/role-explorer";
 import { SectionHeading } from "@/components/section-heading";
 import { TrackedLink } from "@/components/tracked-link";
@@ -68,68 +68,13 @@ export default function HomePage() {
               View on GitHub
             </TrackedLink>
           </div>
+          <div className="hero-visual" aria-label="Telic product walkthrough">
+            <DemoVideo />
+          </div>
           <p className="hero-signature">
             Prompt <i /> Restructure <i /> Evaluate <i /> Act <i /> Verify <i />
             Report
           </p>
-        </div>
-
-        <div className="hero-visual" aria-label="Telic workflow preview">
-          <div className="hero-console">
-            <div className="console-bar">
-              <div>
-                <span />
-                <span />
-                <span />
-              </div>
-              <p>telic / run_7f2a</p>
-              <span className="console-mode">ANALYZE_ONLY</span>
-            </div>
-            <div className="console-prompt">
-              <span>&gt;</span>
-              <p>
-                Every customer gets the same recommendation. Is the ranking
-                broken, or is the data biased?
-              </p>
-            </div>
-            <div className="console-flow">
-              {[
-                [Check, "Repository context", "8 files selected", "done"],
-                [Check, "Problem framed", "facts · unknowns · scope", "done"],
-                [
-                  Check,
-                  "Task compiled",
-                  "permissions · evidence · done",
-                  "done",
-                ],
-                [FileSearch, "Evidence review", "src/ranking.ts", "active"],
-                [
-                  ShieldCheck,
-                  "Release audit",
-                  "waiting for evidence",
-                  "waiting",
-                ],
-              ].map(([Icon, title, detail, state]) => {
-                const StepIcon = Icon as typeof Check;
-                return (
-                  <div
-                    className={`console-step console-step-${state}`}
-                    key={String(title)}
-                  >
-                    <StepIcon aria-hidden="true" />
-                    <div>
-                      <strong>{String(title)}</strong>
-                      <span>{String(detail)}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="console-footer">
-              <span>Mode locked</span>
-              <strong>0 files changed</strong>
-            </div>
-          </div>
         </div>
       </section>
 

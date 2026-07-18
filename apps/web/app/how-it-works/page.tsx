@@ -10,7 +10,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import { DemoVideo } from "@/components/demo-video";
 import { RoleExplorer } from "@/components/role-explorer";
 import { SectionHeading } from "@/components/section-heading";
 import { TrackedLink } from "@/components/tracked-link";
@@ -35,22 +34,6 @@ export default function HowItWorksPage() {
           and review.
         </p>
       </header>
-
-      <section
-        className="section-compact shell walkthrough-section"
-        aria-label="Product walkthrough"
-        data-scroll-reveal-static=""
-      >
-        <DemoVideo />
-      </section>
-
-      <section className="section shell workflow-lead-section">
-        <SectionHeading
-          eyebrow="The workflow spine"
-          title="One sequence. Eight inspectable stages."
-          description="Each stage has a typed input and output. Telic moves from a rough prompt through context, contracts, action, verification, and an honest report—without expanding authority on its own."
-        />
-      </section>
 
       <section className="section-compact shell workflow-explorer-section">
         <WorkflowExplorer />
