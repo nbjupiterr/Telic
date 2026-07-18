@@ -20,7 +20,11 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["packages/**/*.test.ts", "test/**/*.test.ts"],
+    include: [
+      "packages/**/*.test.ts",
+      "test/**/*.test.ts",
+      "apps/**/*.test.ts",
+    ],
     coverage: {
       provider: "v8",
       reporter: ["text", "json-summary", "html"],

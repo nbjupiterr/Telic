@@ -5,7 +5,8 @@
   "description": "A model-independent intent compiler and evidence-driven control plane for coding agents.",
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "engines": {
     "node": ">=24.15.0"
@@ -24,6 +25,11 @@
     "format:check": "prettier --check .",
     "plugin:validate": "python3 scripts/run_codex_validator.py plugin",
     "skill:validate": "python3 scripts/run_codex_validator.py skill",
+    "site:dev": "npm run dev --workspace @telic/web",
+    "site:build": "npm run build --workspace @telic/web",
+    "site:typecheck": "npm run typecheck --workspace @telic/web",
+    "site:check": "npm run site:typecheck && npm run site:build",
+    "site:browser-audit": "node scripts/audit-website.mjs",
     "codex-assets:validate": "node scripts/validate-codex-assets.mjs",
     "codex:validate:official": "npm run plugin:validate && npm run skill:validate",
     "marketplace:validate": "node scripts/validate-marketplace.mjs .agents/plugins/marketplace.json",
@@ -31,7 +37,7 @@
     "adapters:validate:native": "node scripts/validate-adapters.mjs --native",
     "adapters:test": "vitest run test/adapter-packs.test.ts",
     "pack:check": "npm run build && npm pack --workspace telic-mcp --dry-run",
-    "check": "npm run format:check && npm run build && npm run test:coverage && npm run codex-assets:validate && npm run marketplace:validate && npm run adapters:validate",
+    "check": "npm run format:check && npm run build && npm run site:check && npm run test:coverage && npm run codex-assets:validate && npm run marketplace:validate && npm run adapters:validate",
     "check:official": "npm run check && npm run codex:validate:official"
   },
   "devDependencies": {
