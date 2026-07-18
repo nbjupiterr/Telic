@@ -300,6 +300,17 @@ svg {
   letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
+  transition:
+    color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    letter-spacing 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand:hover .brand-wordmark,
+.brand:focus-visible .brand-wordmark {
+  color: var(--accent-strong);
+  letter-spacing: 0.2em;
+  opacity: 0.92;
 }
 
 .desktop-nav {
@@ -2794,6 +2805,17 @@ svg {
 .hero-actions,
 .hero-signature {
   justify-content: center;
+}
+
+.hero-copy .hero-visual {
+  margin: 40px auto 0;
+  max-width: 880px;
+  overflow: visible;
+  text-align: left;
+}
+
+.hero-copy .hero-signature {
+  margin-top: 28px;
 }
 
 .hero-visual {
