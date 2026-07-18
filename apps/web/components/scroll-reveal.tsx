@@ -4,12 +4,8 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 const REVEAL_SELECTOR = "main > header, main > section, .site-footer > .shell";
-
-function isEnoughInView(element: HTMLElement) {
-  const bounds = element.getBoundingClientRect();
-  const viewHeight = window.innerHeight;
-  return bounds.top < viewHeight * 0.82 && bounds.bottom > viewHeight * 0.12;
-}
+/** Shared trigger line: appear when scrolling down past it, disappear when scrolling up past it. */
+const TRIGGER_RATIO = 0.78;
 
 export function ScrollReveal() {
   const pathname = usePathname();
@@ -25,6 +21,7 @@ export function ScrollReveal() {
 
     let lastScrollY = window.scrollY;
     let scrollDirection: "down" | "up" = "down";
+    let frame = 0;
 
     const syncDirection = () => {
       const currentY = window.scrollY;
@@ -39,21 +36,48 @@ export function ScrollReveal() {
     };
 
     const hide = (element: HTMLElement) => {
-      // Keep entry direction as "down" so the next scroll-down appear stays smooth.
       element.setAttribute("data-scroll-reveal", "down");
       element.removeAttribute("data-scroll-reveal-visible");
     };
 
+    const update = () => {
+      syncDirection();
+      const triggerY = window.innerHeight * TRIGGER_RATIO;
+
+      elements.forEach((element) => {
+        const top = element.getBoundingClientRect().top;
+        const pastTrigger = top < triggerY;
+        const isVisible = element.hasAttribute("data-scroll-reveal-visible");
+
+        if (scrollDirection === "down") {
+          // Section-by-section appear as each crosses into view.
+          if (pastTrigger && !isVisible) {
+            reveal(element);
+          }
+          return;
+        }
+
+        // Section-by-section disappear as each crosses back out while scrolling up.
+        if (!pastTrigger && isVisible) {
+          hide(element);
+        }
+      });
+    };
+
+    const onScrollOrResize = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        update();
+      });
+    };
+
     elements.forEach((element) => {
       element.setAttribute("data-scroll-reveal", "down");
-      if (isEnoughInView(element)) {
-        reveal(element);
-      }
     });
-
     root.setAttribute("data-scroll-reveal-ready", "");
 
-    if (reducedMotion || !("IntersectionObserver" in window)) {
+    if (reducedMotion) {
       elements.forEach(reveal);
       return () => {
         root.removeAttribute("data-scroll-reveal-ready");
@@ -64,78 +88,16 @@ export function ScrollReveal() {
       };
     }
 
-    const revealVisibleWhileScrollingDown = () => {
-      if (scrollDirection !== "down") return;
-      elements.forEach((element) => {
-        if (
-          !element.hasAttribute("data-scroll-reveal-visible") &&
-          isEnoughInView(element)
-        ) {
-          // Ensure the hidden offset paints before fading in.
-          void element.getBoundingClientRect();
-          requestAnimationFrame(() => reveal(element));
-        }
-      });
-    };
+    // Initial paint: show only sections already past the trigger.
+    update();
 
-    const hideLeavingElements = () => {
-      elements.forEach((element) => {
-        if (!element.hasAttribute("data-scroll-reveal-visible")) return;
-        if (!isEnoughInView(element)) {
-          hide(element);
-        }
-      });
-    };
-
-    const onScroll = () => {
-      syncDirection();
-      if (scrollDirection === "up") {
-        // While scrolling up, hide sections that leave the reading window so
-        // the next scroll-down can play the appear animation again.
-        hideLeavingElements();
-        return;
-      }
-      revealVisibleWhileScrollingDown();
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        syncDirection();
-        entries.forEach((entry) => {
-          const element = entry.target as HTMLElement;
-          const isVisible = element.hasAttribute("data-scroll-reveal-visible");
-
-          if (!entry.isIntersecting) {
-            if (isVisible) hide(element);
-            return;
-          }
-
-          // Appear only while scrolling down. Scrolling up must not re-show
-          // sections that re-enter from the top.
-          if (
-            scrollDirection === "down" &&
-            entry.intersectionRatio >= 0.16 &&
-            !isVisible &&
-            isEnoughInView(element)
-          ) {
-            void element.getBoundingClientRect();
-            requestAnimationFrame(() => reveal(element));
-          }
-        });
-      },
-      {
-        rootMargin: "0px 0px -8% 0px",
-        threshold: [0, 0.08, 0.16, 0.28, 0.45],
-      },
-    );
-
-    elements.forEach((element) => observer.observe(element));
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
       root.removeAttribute("data-scroll-reveal-ready");
       elements.forEach((element) => {
         element.removeAttribute("data-scroll-reveal");
