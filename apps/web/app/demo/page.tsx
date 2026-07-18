@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowRight, FileVideo, GitFork } from "lucide-react";
 
-import { DemoFrame } from "@/components/demo-frame";
+import { DemoVideo } from "@/components/demo-video";
 import { SectionHeading } from "@/components/section-heading";
 import { TrackedLink } from "@/components/tracked-link";
 import { siteConfig } from "@/lib/site";
@@ -27,15 +27,14 @@ export default function DemoPage() {
       </header>
 
       <section className="section-compact shell demo-page-frame">
-        <DemoFrame />
+        <DemoVideo />
         <div className="demo-slot-note">
           <FileVideo aria-hidden="true" />
           <div>
             <strong>Product walkthrough</strong>
             <p>
-              This guided preview maps the final 22-second product loop. The
-              live recording will add pause controls and preserve the transcript
-              below.
+              This recording is a silent loop. Pause it whenever you want; the
+              plain-language transcript remains below.
             </p>
           </div>
         </div>
@@ -93,7 +92,10 @@ export default function DemoPage() {
         </div>
       </section>
 
-      <section className="section transcript-section section-divider">
+      <section
+        className="section transcript-section section-divider"
+        id="demo-transcript"
+      >
         <div className="shell transcript-grid">
           <div>
             <p className="eyebrow">Demo transcript</p>
