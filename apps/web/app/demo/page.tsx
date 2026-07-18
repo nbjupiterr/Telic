@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight, FileVideo, GitFork } from "lucide-react";
+import { ArrowRight, GitFork } from "lucide-react";
 
 import { DemoVideo } from "@/components/demo-video";
 import { SectionHeading } from "@/components/section-heading";
@@ -28,60 +28,52 @@ export default function DemoPage() {
 
       <section className="section-compact shell demo-page-frame">
         <DemoVideo />
-        <div className="demo-slot-note">
-          <FileVideo aria-hidden="true" />
-          <div>
-            <strong>Product walkthrough</strong>
-            <p>
-              This recording is a silent loop. Pause it whenever you want; the
-              plain-language transcript remains below.
-            </p>
-          </div>
-        </div>
       </section>
 
       <section className="section demo-timeline-section section-divider">
         <div className="shell">
           <SectionHeading
-            eyebrow="Twenty-two seconds"
+            eyebrow="6 steps"
             title="One clear visual story."
-            description="Keep the screen focused on the workflow, compress waiting time, and let the artifacts carry the explanation."
+            description="Keep the screen focused on the workflow and let each artifact carry the explanation."
           />
           <ol className="demo-timeline">
             {[
               [
-                "00–03",
+                "1",
                 "Prompt",
                 "Submit the vague recommendation-bias request with analyze-only authority.",
               ],
               [
-                "03–06",
+                "2",
                 "Context",
                 "Show the project root, mode, and repository context being grounded.",
               ],
               [
-                "06–09",
+                "3",
                 "Structure",
                 "Reveal the problem frame and task contract as compact artifact cards.",
               ],
               [
-                "09–13",
+                "4",
                 "Evidence",
                 "Inspect the ranking implementation and preserve the repository source reference.",
               ],
               [
-                "13–17",
+                "5",
                 "Verify",
                 "Highlight analyze_only, zero changed files, and unavailable runtime evidence.",
               ],
               [
-                "17–22",
+                "6",
                 "Report",
                 "End on confirmed findings, unverified claims, and the next evidence needed.",
               ],
-            ].map(([time, title, description]) => (
-              <li key={time}>
-                <time>{time}s</time>
+            ].map(([step, title, description]) => (
+              <li key={step}>
+                <span className="demo-step-number" aria-hidden="true">
+                  {step}
+                </span>
                 <div>
                   <h2>{title}</h2>
                   <p>{description}</p>
