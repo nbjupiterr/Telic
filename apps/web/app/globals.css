@@ -2222,6 +2222,55 @@ svg {
   padding-bottom: 100px;
 }
 
+.demo-video {
+  background: #090909;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  margin: 0;
+  overflow: hidden;
+}
+
+.demo-video video {
+  aspect-ratio: 16 / 9;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.demo-video figcaption {
+  align-items: center;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  justify-content: space-between;
+  letter-spacing: 0.02em;
+  padding: 12px 14px;
+}
+
+.demo-video-control {
+  align-items: center;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 6px;
+  padding: 7px 10px;
+}
+
+.demo-video-control:hover {
+  background: var(--surface-hover);
+}
+
+.demo-video-control svg {
+  height: 13px;
+  width: 13px;
+}
+
 .demo-slot-note {
   align-items: flex-start;
   background: var(--surface-raised);
