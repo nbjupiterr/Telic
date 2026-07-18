@@ -64,6 +64,7 @@ export function InstallTabs() {
       <section
         className="install-panel"
         id={`install-panel-${guide.id}`}
+        key={guide.id}
         role="tabpanel"
         aria-labelledby={`install-tab-${guide.id}`}
         tabIndex={0}

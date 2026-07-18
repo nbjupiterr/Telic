@@ -69,6 +69,7 @@ export function RoleExplorer() {
       <div
         className="role-panel"
         id={`panel-${active.id}`}
+        key={active.id}
         role="tabpanel"
         aria-labelledby={`tab-${active.id}`}
         tabIndex={0}
