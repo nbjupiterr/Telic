@@ -39,6 +39,7 @@ export default function HowItWorksPage() {
       <section
         className="section-compact shell walkthrough-section"
         aria-label="Product walkthrough"
+        data-scroll-reveal-static=""
       >
         <DemoVideo />
       </section>

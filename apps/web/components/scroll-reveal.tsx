@@ -14,7 +14,7 @@ export function ScrollReveal() {
     const root = document.documentElement;
     const elements = Array.from(
       document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR),
-    );
+    ).filter((element) => !element.hasAttribute("data-scroll-reveal-static"));
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
