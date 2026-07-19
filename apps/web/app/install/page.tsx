@@ -9,6 +9,7 @@ import {
   TerminalSquare,
 } from "lucide-react";
 
+import { hostIcons } from "@/components/host-icons";
 import { InstallTabs } from "@/components/install-tabs";
 import { SectionHeading } from "@/components/section-heading";
 import { TrackedLink } from "@/components/tracked-link";
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 export default function InstallPage() {
   return (
     <main className="page-main" id="main-content">
-      <header className="page-intro shell">
+      <header className="page-intro shell" data-scroll-reveal-static="">
         <p className="eyebrow">Install Telic</p>
         <h1>Bring the workflow to your coding host.</h1>
         <p>
@@ -115,13 +116,18 @@ export default function InstallPage() {
             </p>
           </div>
           <div className="compatibility-hosts">
-            {hosts.map((host, index) => (
-              <span key={host}>
-                <i>{host.slice(0, 2).toUpperCase()}</i>
-                {host}
-                <small>{index === 0 ? "Reference" : "Source"}</small>
-              </span>
-            ))}
+            {hosts.map((host, index) => {
+              const HostIcon = hostIcons[host];
+              return (
+                <span key={host}>
+                  <i aria-hidden="true">
+                    <HostIcon />
+                  </i>
+                  {host}
+                  <small>{index === 0 ? "Reference" : "Source"}</small>
+                </span>
+              );
+            })}
           </div>
         </div>
         <div className="install-links">
